@@ -1,8 +1,10 @@
-
+# %%
 class Node(object):
     def __init__(self, data, next=None):
         self.data = data
         self.next = None
+    def __del__(self):
+        print(f'Node with data {self.data} is destroyed')
 
 class LinkedList(object):
     def __init__(self):
@@ -28,37 +30,70 @@ class LinkedList(object):
             self.size += 1
     
     def remove_front(self):
-        if self.size == 0:
-            print('Empty')
-            return
+        if self.is_empty(): return
         elif self.size == 1:
-            curr = self.head
+            data = self.head.data
             self.head = None
             self.size -= 1
-            return curr.data
+            return data
+        else:
+            data = self.head.data
+            self.head = self.head.next
+            self.size -= 1
+            return data
+    
+    def remove_back(self):
+        if self.is_empty(): return
+        elif self.size == 1:
+            data = self.head.data
+            self.head = None
+            self.size -= 1
+            return data
         else:
             curr = self.head
-            self.head = curr.next
+            while curr.next.next is not None:
+                curr = curr.next
+            data = curr.next.data
+            curr.next = None
             self.size -= 1
-            return curr.data
-    
-    # def remove_back(self):
-    #     if self.size == 0:
-    #         print('Empty')
-    #         return
-    #     elif self.size == 1:
-    #         curr = self.head
-    #         self.head = None
-    #         self.size -= 1
-    #         return curr.data
-    #     else:
-    #         curr = self.head
-    #         while curr.next.next is not None:
-    #             curr = curr.next
+            return data
     
     def peek(self):
         return self.head.data
     
+    def remove(self, data):
+        prev = self.find_prev(data)
+        if prev is None: return
+        if prev == self.head:
+            self.remove_front()
+            return
+        curr = prev.next
+        prev.next = curr.next
+        self.size -= 1
+        
+    def find_prev(self, data):
+        if self.is_empty(): return
+        curr = self.head
+        if curr.data == data: 
+            print(f'first Node data {data}')
+            return curr
+        
+        while curr.next is not None and curr.next.data != data:
+            curr = curr.next
+        if curr.next is None:
+            print('not found')
+            return None
+        else:
+            print(f'previous Node data {curr.data}')
+            return curr
+    
+    def is_empty(self):
+        if self.size == 0:
+            print('Empty')
+            return True
+        else:
+            return False
+
     def print_list(self):
         curr = self.head
         print('========== print list ==========')
@@ -66,12 +101,29 @@ class LinkedList(object):
             print(curr.data)
             curr = curr.next
 
+# llist = LinkedList()
+# llist.push_front(2)
+# llist.print_list()
+
+# llist.push_front(1)
+# llist.print_list()
+
+# llist.push_back(3)
+# llist.print_list()
+
+# llist = LinkedList()
+# llist.push_front(2)
+
+## Test remove
 llist = LinkedList()
-llist.push_front(2)
+for i in range(0, 10):
+    llist.push_front(i)
+
+llist.remove(2)
 llist.print_list()
 
-llist.push_front(1)
-llist.print_list()
+# ## Test remove
 
-llist.push_back(3)
-llist.print_list()
+# llist = LinkedList()
+# llist.remove(9)
+# llist.print_list()
