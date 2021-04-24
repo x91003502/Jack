@@ -29,6 +29,17 @@ class LinkedList(object):
             curr.next = new_node
             self.size += 1
     
+    def insert_after(self, prev_data, new_data):
+        if self.is_empty: return
+        new_node = Node(new_data)
+        prev = self.find_prev(prev_data)
+        if prev is None:
+            print(f'Node with data = {prev_data} is not found')
+            return
+        temp = prev.next
+        prev.next = new_node
+        new_node.next = temp
+    
     def remove_front(self):
         if self.is_empty(): return
         elif self.size == 1:
@@ -58,9 +69,6 @@ class LinkedList(object):
             self.size -= 1
             return data
     
-    def peek(self):
-        return self.head.data
-    
     def remove(self, data):
         prev = self.find_prev(data)
         if prev is None: return
@@ -70,7 +78,10 @@ class LinkedList(object):
         curr = prev.next
         prev.next = curr.next
         self.size -= 1
-        
+    
+    def peek(self):
+        return self.head.data
+    
     def find_prev(self, data):
         if self.is_empty(): return
         curr = self.head
