@@ -71,17 +71,24 @@ class Tree(object):
     
     def print_paths(self):
         if self.root is None: return
-        stack = list()
-        stack.append(self.root.data)
+        s = ''
+        self.recur_print_paths(self.root, s)
         
-    def recur_print_paths(self, croot):
+    def recur_print_paths(self, croot, s):
+        s = f'{s} {croot.data}'
+        if croot.left is None and croot.right is None:
+            print(s)
+        if croot.left is not None:
+            self.recur_print_paths(croot.left, s)
+        if croot.right is not None:
+            self.recur_print_paths(croot.right, s)
         
     
     def iter_in_order(self):
         if self.root is None: return
         # TODO: create a stack to store the current stage of traversal
     
-    def print_tree(self):
+    # def print_tree(self):
         # h = self.height()
         # n_space = pow(2, h) # 2^h
         # # print(n_space)
@@ -91,16 +98,13 @@ class Tree(object):
         # s = f'{s}{self.root.data}'
         # TODO: print tree using BFSs
         
-        
-    
-
 tree = Tree()
-tree.insert(8)
-tree.insert(3)
-tree.insert(7)
-tree.insert(5)
-tree.insert(6)
-tree.insert(10)
+# tree.insert(8)
+# tree.insert(3)
+# tree.insert(7)
+# tree.insert(5)
+# tree.insert(6)
+# tree.insert(10)
 # print('=======')
 # tree.in_order()
 # print('=======')
@@ -111,3 +115,17 @@ tree.insert(10)
 # print('=======')
 # tree.level_order()
 # print(tree.height())
+
+
+tree = Tree()
+tree.insert(7)
+tree.insert(3)
+tree.insert(10)
+tree.insert(2)
+tree.insert(5)
+tree.insert(8)
+tree.insert(11)
+tree.insert(1)
+tree.insert(4)
+tree.insert(6)
+tree.print_paths()
