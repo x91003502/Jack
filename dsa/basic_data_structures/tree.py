@@ -43,30 +43,50 @@ class Tree(object):
         else:
             return self.recur_find(croot.right, key)
     
-    def remove(self, key):
-        croot = self.find(key)
-        if croot.left is not None and croot.right is not None:
-            self.two_child_remove(croot)
+    def find_parent_croot(self, key):
+        parent = self.root
+        croot = self.root
+        return self.recur_find_parent_croot(parent, croot, key)
+
+    def recur_find_parent_croot(self, parent, croot, key):
+        if croot is None: return None
+        if key == croot.key: return parent, croot
+        elif key < croot.key:
+            return self.recur_find_parent_croot(croot, croot.left, key)
         else:
-            self.zero_one_child_remove(croot)
+            return self.recur_find_parent_croot(croot, croot.right, key)
     
-    def two_child_remove(self, croot):
-        iop = self.right_most_child(croot.left)
+    def remove(self, key):
+        parent, croot = self.find_parent_croot(key)
+        if croot.left is not None and croot.right is not None:
+            self.two_child_remove(parent, croot)
+        else:
+            self.zero_one_child_remove(parent, croot)
+    
+    def two_child_remove(self, parent, croot):
+        iop_parent, iop = self.right_most_child(croot, croot.left)
         croot.key = iop.key
         croot.value = iop.value
-        iop = None
+        # iop_parent.right = None
+        self.zero_one_child_remove(iop_parent, iop)
         # self.zero_one_child_remove(iop)
     
-    def zero_one_child_remove(self, croot):
-        temp = croot
-        if croot.left is None: croot = croot.right
-        else: croot = croot.left
-        temp = None
+    def zero_one_child_remove(self, parent, croot):
+        if parent.left is not None and parent.left.key == croot.key:
+            if croot.left is None:
+                parent.left = croot.right
+            else:
+                parent.left = croot.left
+        elif parent.right is not None and parent.right.key == croot.key:
+            if croot.left is None:
+                parent.right = croot.right
+            else:
+                parent.right = croot.left
     
-    def right_most_child(self, croot):
-        if croot.right is None: return croot
-        else: return self.right_most_child(croot.right)
-    
+    def right_most_child(self, parent, croot):
+        if croot.right is None: return parent, croot
+        else: return self.right_most_child(croot, croot.right)
+        
     def pre_order(self):
         res = list()
         return self.recur_pre_order(self.root, res)
@@ -151,17 +171,23 @@ class Tree(object):
         #     s = f'{s} '
         # s = f'{s}{self.root.key}'
         # TODO: print tree using BFSs
+
+
 tree = Tree()
-# l = [38,13,51,10,25,40,84,12,37,66,89,95]
-l = [2, 1, 3]
+l = [38,13,51,10,25,40,84,12,37,66,89,95]
 length = len(l)
 while len(l) > 0:
         key = l.pop(0)
         value = chr(key)
         tree.insert(key, value)
-tree.remove(1)
-print(tree.root.left)
-root = tree.root
 print(tree.in_order())
-# assert tree.root.key == 37
-# assert tree.find(38) == None
+tree.remove(38)
+print(tree.in_order())
+tree.remove(89)
+print(tree.in_order())
+tree.remove(13)
+print(tree.in_order())
+tree.remove(10)
+print(tree.in_order())
+tree.remove(12)
+print(tree.in_order())
