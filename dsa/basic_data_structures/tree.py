@@ -156,38 +156,3 @@ class Tree(object):
             self.recur_print_paths(croot.left, s)
         if croot.right is not None:
             self.recur_print_paths(croot.right, s)
-        
-    
-    # def iter_in_order(self):
-        # if self.root is None: return
-        # TODO: create a stack to store the current stage of traversal
-    
-    # def print_tree(self):
-        # h = self.height()
-        # n_space = pow(2, h) # 2^h
-        # # print(n_space)
-        # s = ''
-        # for i in range(0, n_space):
-        #     s = f'{s} '
-        # s = f'{s}{self.root.key}'
-        # TODO: print tree using BFSs
-
-
-tree = Tree()
-l = [38,13,51,10,25,40,84,12,37,66,89,95]
-length = len(l)
-while len(l) > 0:
-        key = l.pop(0)
-        value = chr(key)
-        tree.insert(key, value)
-print(tree.in_order())
-tree.remove(38)
-print(tree.in_order())
-tree.remove(89)
-print(tree.in_order())
-tree.remove(13)
-print(tree.in_order())
-tree.remove(10)
-print(tree.in_order())
-tree.remove(12)
-print(tree.in_order())
