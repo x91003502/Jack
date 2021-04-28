@@ -17,6 +17,23 @@ def test_insert():
         curr = curr.right
         k += 1
 
+def test_insert2():
+    tree = Tree()
+    s = 100
+    for i in range(0, s):
+        tree.insert(i, i)
+    
+    # try to insert again
+    for i in range(0, 10):
+        tree.insert(i, i+1)
+    k = 0
+    curr = tree.root
+    while k < s:
+        assert curr.key == k
+        assert curr.left == None
+        curr = curr.right
+        k += 1
+
 def test_in_order():
     tree = Tree()
     s = 100
@@ -79,6 +96,20 @@ def test_find():
         croot = tree.find(key)
         assert croot.value == value
 
+def test_find2():
+    tree = Tree()
+    l = [38,13,51,10,25,40,84,12,37,66,89,95]
+    length = len(l)
+    while len(l) > 0:
+        key = l.pop(0)
+        value = chr(key)
+        tree.insert(key, value)
+    
+    assert tree.find(100) == None
+    assert tree.find(50) == None
+    assert tree.find(15) == None
+    assert tree.find(39) == None
+
 def test_find_parent_croot():
     tree = Tree()
     l = [38,13,51,10,25,40,84,12,37,66,89,95]
@@ -138,10 +169,24 @@ def test_remove():
     
     tree.remove(10)
     print(tree.in_order())
-    tree.remove(12)
+    tree.remove(15)
     print(tree.in_order())
     p, c = tree.find_parent_croot(25)
     assert p.key == 37
+
+def test_remove():
+    tree = Tree()
+    l = [38,13,51,10,25,40,84,12,37,66,89,95]
+    length = len(l)
+    while len(l) > 0:
+            key = l.pop(0)
+            value = chr(key)
+            tree.insert(key, value)
+    tree.remove(100)
+    tree.remove(50)
+    tree.remove(13)
+    tree.remove(39)
+
 
 def test_mirror():
     tree = Tree()

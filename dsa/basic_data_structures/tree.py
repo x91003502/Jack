@@ -18,6 +18,10 @@ class Tree(object):
         if self.root is None:
             self.root = TreeNode(key, value)
         else:
+            res = self.find(key)
+            if res is not None:
+                print('key already exists')
+                return
             self.recur_insert(self.root, key, value)
     
     def recur_insert(self, croot, key, value):
@@ -49,7 +53,7 @@ class Tree(object):
         return self.recur_find_parent_croot(parent, croot, key)
 
     def recur_find_parent_croot(self, parent, croot, key):
-        if croot is None: return None
+        if croot is None: return None, None
         if key == croot.key: return parent, croot
         elif key < croot.key:
             return self.recur_find_parent_croot(croot, croot.left, key)
@@ -58,10 +62,14 @@ class Tree(object):
     
     def remove(self, key):
         parent, croot = self.find_parent_croot(key)
+        if croot is None:
+            print('key not found')
+            return
         if croot.left is not None and croot.right is not None:
             self.two_child_remove(parent, croot)
         else:
             self.zero_one_child_remove(parent, croot)
+        
     
     def two_child_remove(self, parent, croot):
         iop_parent, iop = self.right_most_child(croot, croot.left)
@@ -162,3 +170,12 @@ class Tree(object):
             self.recur_print_paths(croot.left, s, l)
         if croot.right is not None:
             self.recur_print_paths(croot.right, s, l)
+
+tree = Tree()
+l = [38,13,51,10,25,40,84,12,37,66,89,95]
+length = len(l)
+while len(l) > 0:
+        key = l.pop(0)
+        value = chr(key)
+        tree.insert(key, value)
+tree.remove(100)
