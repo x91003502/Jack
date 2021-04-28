@@ -37,6 +37,21 @@ def test_in_order2():
     res = tree.pre_order()
     assert res == elem
 
+def test_in_order_pre_order_level_order():
+    tree = Tree()
+    l = [38,13,51,10,25,40,84,12,37,66,89,95]
+    length = len(l)
+    while len(l) > 0:
+        key = l.pop(0)
+        value = chr(key)
+        tree.insert(key, value)
+    in_order = tree.in_order()
+    pre_order = tree.pre_order()
+    level_order = tree.level_order()
+    assert in_order ==  [10,12,13,25,37,38,40,51,66,84,89,95]
+    assert pre_order == [38,13,10,12,25,37,51,40,84,66,89,95]
+    assert level_order == [38,13,51,10,25,40,84,12,37,66,89,95]
+
 def test_height():
     tree = Tree()
     s = 100
@@ -127,8 +142,38 @@ def test_remove():
     print(tree.in_order())
     p, c = tree.find_parent_croot(25)
     assert p.key == 37
-    
-    
-    
+
+def test_mirror():
+    tree = Tree()
+    l = [38,13,51,10,25,40,84,12,37,66,89,95]
+    length = len(l)
+    while len(l) > 0:
+            key = l.pop(0)
+            value = chr(key)
+            tree.insert(key, value)
+    level_order = tree.level_order()
+    assert level_order == [38,13,51,10,25,40,84,12,37,66,89,95]
+    tree.mirror()
+    level_order = tree.level_order()
+    pre_order = tree.pre_order()
+    assert level_order == [38,51,13,84,40,25,10,89,66,37,12,95]
+    assert pre_order == [38,51,84,89,95,66,40,13,25,37,10,12]
+
+
+def test_print_paths():
+    tree = Tree()
+    l = [38,13,51,10,25,40,84,12,37,66,89,95]
+    length = len(l)
+    while len(l) > 0:
+            key = l.pop(0)
+            value = chr(key)
+            tree.insert(key, value)
+    l =tree.print_paths()
+    assert l[0] == ' 38 13 10 12'
+    assert l[1] == ' 38 13 25 37'
+    assert l[2] == ' 38 51 40'
+    assert l[3] == ' 38 51 84 66'
+    assert l[4] == ' 38 51 84 89 95'
+
 
 

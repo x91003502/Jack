@@ -114,14 +114,17 @@ class Tree(object):
     def level_order(self):
         if self.root is None: return
         queue = list()
+        res = list()
         queue.append(self.root)
         while len(queue) != 0:
             node = queue.pop(0)
-            print(node.key)
+            # print(node.key)
+            res.append(node.key)
             if node.left is not None:
                 queue.append(node.left)
             if node.right is not None:
                 queue.append(node.right)
+        return res
     
     def height(self):
         if self.root is None: return -1
@@ -146,13 +149,16 @@ class Tree(object):
     def print_paths(self):
         if self.root is None: return
         s = ''
-        self.recur_print_paths(self.root, s)
+        l = list()
+        self.recur_print_paths(self.root, s, l)
+        return l
         
-    def recur_print_paths(self, croot, s):
-        s = f'{s} {croot.data}'
+    def recur_print_paths(self, croot, s, l):
+        s = f'{s} {croot.key}'
         if croot.left is None and croot.right is None:
-            print(s)
+            # print(s)
+            l.append(s)
         if croot.left is not None:
-            self.recur_print_paths(croot.left, s)
+            self.recur_print_paths(croot.left, s, l)
         if croot.right is not None:
-            self.recur_print_paths(croot.right, s)
+            self.recur_print_paths(croot.right, s, l)
