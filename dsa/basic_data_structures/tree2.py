@@ -1,9 +1,10 @@
 # %%
 import math
 class TreeNode(object):
-    def __init__(self, key, value):
+    def __init__(self, key, value, parent=None):
         self.key = key
         self.value = value
+        self.parent = parent
         self.left = None
         self.right = None
     
@@ -17,6 +18,7 @@ class Tree(object):
     def insert(self, key, value):
         if self.root is None:
             self.root = TreeNode(key, value)
+            self.root.parent = self.root
         else:
             croot = self.find(key)
             if croot is not None:
@@ -27,12 +29,12 @@ class Tree(object):
     def recur_insert(self, croot, key, value):
         if key < croot.key:
             if croot.left is None:
-                croot.left = TreeNode(key, value)
+                croot.left = TreeNode(key, value, croot)
             else:
                 self.recur_insert(croot.left, key, value)
         else:
             if croot.right is None:
-                croot.right = TreeNode(key, value)
+                croot.right = TreeNode(key, value, croot)
             else:
                 self.recur_insert(croot.right, key, value)
     
@@ -47,39 +49,40 @@ class Tree(object):
         else:
             return self.recur_find(croot.right, key)
     
-    def find_parent_croot(self, key):
-        parent = self.root
-        croot = self.root
-        return self.recur_find_parent_croot(parent, croot, key)
+    # def find_parent_croot(self, key):
+    #     parent = self.root
+    #     croot = self.root
+    #     return self.recur_find_parent_croot(parent, croot, key)
 
-    def recur_find_parent_croot(self, parent, croot, key):
-        if croot is None: return None, None
-        if key == croot.key: return parent, croot
-        elif key < croot.key:
-            return self.recur_find_parent_croot(croot, croot.left, key)
-        else:
-            return self.recur_find_parent_croot(croot, croot.right, key)
+    # def recur_find_parent_croot(self, parent, croot, key):
+    #     if croot is None: return None, None
+    #     if key == croot.key: return parent, croot
+    #     elif key < croot.key:
+    #         return self.recur_find_parent_croot(croot, croot.left, key)
+    #     else:
+    #         return self.recur_find_parent_croot(croot, croot.right, key)
     
     def remove(self, key):
-        parent, croot = self.find_parent_croot(key)
+        croot = self.find(key)
         if croot is None:
             print('key not found')
             return
         if croot.left is not None and croot.right is not None:
-            self.two_child_remove(parent, croot)
+            self.two_child_remove(croot)
         else:
-            self.zero_one_child_remove(parent, croot)
+            self.zero_one_child_remove(croot)
         
     
-    def two_child_remove(self, parent, croot):
-        iop_parent, iop = self.right_most_child(croot, croot.left)
+    def two_child_remove(self, croot):
+        iop = self.right_most_child(croot.left)
         croot.key = iop.key
         croot.value = iop.value
         # iop_parent.right = None
-        self.zero_one_child_remove(iop_parent, iop)
+        self.zero_one_child_remove(iop)
         # self.zero_one_child_remove(iop)
     
-    def zero_one_child_remove(self, parent, croot):
+    def zero_one_child_remove(self, croot):
+        parent = croot.parent
         if parent.left is not None and parent.left.key == croot.key:
             if croot.left is None:
                 parent.left = croot.right
@@ -91,9 +94,9 @@ class Tree(object):
             else:
                 parent.right = croot.left
     
-    def right_most_child(self, parent, croot):
-        if croot.right is None: return parent, croot
-        else: return self.right_most_child(croot, croot.right)
+    def right_most_child(self, croot):
+        if croot.right is None: return croot
+        else: return self.right_most_child(croot.right)
         
     def pre_order(self):
         res = list()
