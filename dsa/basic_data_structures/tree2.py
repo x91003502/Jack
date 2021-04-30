@@ -49,19 +49,6 @@ class Tree(object):
         else:
             return self.recur_find(croot.right, key)
     
-    # def find_parent_croot(self, key):
-    #     parent = self.root
-    #     croot = self.root
-    #     return self.recur_find_parent_croot(parent, croot, key)
-
-    # def recur_find_parent_croot(self, parent, croot, key):
-    #     if croot is None: return None, None
-    #     if key == croot.key: return parent, croot
-    #     elif key < croot.key:
-    #         return self.recur_find_parent_croot(croot, croot.left, key)
-    #     else:
-    #         return self.recur_find_parent_croot(croot, croot.right, key)
-    
     def remove(self, key):
         croot = self.find(key)
         if croot is None:
@@ -71,15 +58,12 @@ class Tree(object):
             self.two_child_remove(croot)
         else:
             self.zero_one_child_remove(croot)
-        
     
     def two_child_remove(self, croot):
         iop = self.right_most_child(croot.left)
         croot.key = iop.key
         croot.value = iop.value
-        # iop_parent.right = None
         self.zero_one_child_remove(iop)
-        # self.zero_one_child_remove(iop)
     
     def zero_one_child_remove(self, croot):
         parent = croot.parent

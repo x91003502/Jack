@@ -69,15 +69,12 @@ class Tree(object):
             self.two_child_remove(parent, croot)
         else:
             self.zero_one_child_remove(parent, croot)
-        
     
     def two_child_remove(self, parent, croot):
         iop_parent, iop = self.right_most_child(croot, croot.left)
         croot.key = iop.key
         croot.value = iop.value
-        # iop_parent.right = None
         self.zero_one_child_remove(iop_parent, iop)
-        # self.zero_one_child_remove(iop)
     
     def zero_one_child_remove(self, parent, croot):
         if parent.left is not None and parent.left.key == croot.key:
