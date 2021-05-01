@@ -18,7 +18,7 @@ class AVL(object):
     def insert(self, key, value):
         if self.root is None:
             self.root = TreeNode(key, value)
-            self.root.parent = self.root
+            # self.root.parent = self.root
         else:
             croot = self.find(key)
             if key == croot.key:
@@ -31,6 +31,36 @@ class AVL(object):
             b = self.recur_is_balanced(croot)
             if isinstance(b, TreeNode):
                 print(f'not balanced, lowest unbalanced root found : {b.key}')
+                self.left_rotation(b)
+    
+    def left_rotation(self, croot):
+        print('left_rotation')
+        subroot = croot.right
+        parent = croot.parent
+        croot.right = subroot.left
+        subroot.left = croot
+        croot.parent = subroot
+
+        # croot = subroot
+        if parent is None:
+            self.root = subroot
+            subroot.parent = None
+        else:
+            parent.right = subroot
+            subroot.parent = parent
+        
+        # subroot = croot.right
+        # parent = croot.parent
+        
+        # croot.right = subroot.left
+        
+        # subroot.left = croot
+        # parent.right = subroot
+        # if croot == self.root:
+        #     print(subroot)
+        #     self.root = subroot
+        # croot.parent = subroot
+        # subroot.parent = parent
     
     def find(self, key):
         return self.recur_find(self.root, key)
@@ -133,7 +163,7 @@ class AVL(object):
     
     def recur_is_balanced(self, croot):
         b = self.is_balanced(croot)
-        if b is True and croot != croot.parent:
+        if b is True and croot.parent != None:
             return self.is_balanced(croot.parent)
         else:
             return b
@@ -178,11 +208,12 @@ class AVL(object):
         if croot.right is not None:
             self.recur_print_paths(croot.right, s, l)
 
-tree = AVL()
-l = [1,2,3,4]
-length = len(l)
-while len(l) > 0:
-    key = l.pop(0)
-    value = chr(key)
-    tree.insert(key, value)
+# tree = AVL()
+# l = [1,2,4,3,5]
+# length = len(l)
+# while len(l) > 0:
+#     key = l.pop(0)
+#     value = chr(key)
+#     tree.insert(key, value)
+#     print(f'in order {tree.in_order()}')
 
