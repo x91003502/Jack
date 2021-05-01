@@ -130,6 +130,9 @@ def test_find_parent_croot():
     p1, c1 = tree.find_parent_croot(66)
     p2, c2 = tree.find_parent_croot(89)
     assert p1.key == p2.key
+    assert c1.key == 66
+    assert c2.key == 89
+    
     
 def test_right_most_child():
     tree = Tree()
@@ -166,15 +169,17 @@ def test_remove():
     print(tree.in_order())
     p, c = tree.find_parent_croot(10)
     assert p.key == 12
+    assert c.key == 10
     
     tree.remove(10)
     print(tree.in_order())
     tree.remove(15)
     print(tree.in_order())
     p, c = tree.find_parent_croot(25)
-    assert p.key == 37
+    assert p.key == 12
+    assert c.key == 25
 
-def test_remove():
+def test_remove2():
     tree = Tree()
     l = [38,13,51,10,25,40,84,12,37,66,89,95]
     length = len(l)
@@ -219,6 +224,3 @@ def test_print_paths():
     assert l[2] == ' 38 51 40'
     assert l[3] == ' 38 51 84 66'
     assert l[4] == ' 38 51 84 89 95'
-
-
-
