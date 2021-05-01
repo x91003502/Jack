@@ -18,7 +18,6 @@ class Tree(object):
     def insert(self, key, value):
         if self.root is None:
             self.root = TreeNode(key, value)
-            self.root.parent = self.root
         else:
             croot = self.find(key)
             if croot is not None:
