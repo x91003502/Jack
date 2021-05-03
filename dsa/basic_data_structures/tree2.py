@@ -163,15 +163,3 @@ class Tree(object):
             self.recur_print_paths(croot.left, s, l)
         if croot.right is not None:
             self.recur_print_paths(croot.right, s, l)
-
-# tree = Tree()
-# l = [38,13,51,10,25,40,84,12,37,66,89,95]
-# length = len(l)
-# while len(l) > 0:
-#         key = l.pop(0)
-#         value = chr(key)
-#         tree.insert(key, value)
-# tree.remove(100)
-# tree.remove(50)
-# tree.remove(14)
-# tree.remove(39)
