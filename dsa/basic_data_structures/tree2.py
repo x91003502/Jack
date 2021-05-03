@@ -18,39 +18,37 @@ class Tree(object):
     def insert(self, key, value):
         if self.root is None:
             self.root = TreeNode(key, value)
+            # self.root.parent = self.root
         else:
             croot = self.find(key)
-            if croot is not None:
+            if key == croot.key:
                 print('key already exists')
                 return
-            self.recur_insert(self.root, key, value)
-    
-    def recur_insert(self, croot, key, value):
-        if key < croot.key:
-            if croot.left is None:
+            if key < croot.key:
                 croot.left = TreeNode(key, value, croot)
             else:
-                self.recur_insert(croot.left, key, value)
-        else:
-            if croot.right is None:
                 croot.right = TreeNode(key, value, croot)
-            else:
-                self.recur_insert(croot.right, key, value)
     
     def find(self, key):
         return self.recur_find(self.root, key)
     
     def recur_find(self, croot, key):
-        if croot is None: return None
         if key == croot.key: return croot
-        elif key < croot.key:
+        if key < croot.key and croot.left is not None:
             return self.recur_find(croot.left, key)
-        else:
+        elif key < croot.key and croot.left is None:
+            print(f'key {key} not found, return a parent node {croot.key}')
+            return croot
+        
+        if key > croot.key and croot.right is not None:
             return self.recur_find(croot.right, key)
+        elif key > croot.key and croot.right is None:
+            print(f'key {key} not found, return a parent node {croot.key}')
+            return croot
     
     def remove(self, key):
         croot = self.find(key)
-        if croot is None:
+        if croot.key != key:
             print('key not found')
             return
         if croot.left is not None and croot.right is not None:
@@ -69,13 +67,22 @@ class Tree(object):
         if parent.left is not None and parent.left.key == croot.key:
             if croot.left is None:
                 parent.left = croot.right
+                if croot.right is not None:
+                    croot.right.parent = parent
             else:
                 parent.left = croot.left
+                if croot.left is not None:
+                    croot.left.parent = parent
+                
         elif parent.right is not None and parent.right.key == croot.key:
             if croot.left is None:
                 parent.right = croot.right
+                if croot.right is not None:
+                    croot.right.parent = parent
             else:
                 parent.right = croot.left
+                if croot.left is not None:
+                    croot.left.parent = parent
     
     def right_most_child(self, croot):
         if croot.right is None: return croot
@@ -156,3 +163,15 @@ class Tree(object):
             self.recur_print_paths(croot.left, s, l)
         if croot.right is not None:
             self.recur_print_paths(croot.right, s, l)
+
+# tree = Tree()
+# l = [38,13,51,10,25,40,84,12,37,66,89,95]
+# length = len(l)
+# while len(l) > 0:
+#         key = l.pop(0)
+#         value = chr(key)
+#         tree.insert(key, value)
+# tree.remove(100)
+# tree.remove(50)
+# tree.remove(14)
+# tree.remove(39)

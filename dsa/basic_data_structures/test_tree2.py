@@ -6,7 +6,7 @@ LOGGER = logging.getLogger(__name__)
 
 def test_insert():
     tree = Tree()
-    s = 10
+    s = 100
     for i in range(0, s):
         tree.insert(i, i)
     k = 0
@@ -99,21 +99,15 @@ def test_find():
 def test_find2():
     tree = Tree()
     l = [38,13,51,10,25,40,84,12,37,66,89,95]
+    length = len(l)
     while len(l) > 0:
         key = l.pop(0)
         value = chr(key)
         tree.insert(key, value)
-    
-    assert tree.find(100) == None
-    assert tree.find(50) == None
-    assert tree.find(15) == None
-    assert tree.find(39) == None
-    
-    # check parent except root node (38)
-    assert tree.find(13).parent.key == tree.find(51).parent.key == 38
-    assert tree.find(10).parent.key == tree.find(25).parent.key == 13
-    assert tree.find(40).parent.key == tree.find(84).parent.key == 51
-    assert tree.find(66).parent.key == tree.find(89).parent.key == 84
+    assert tree.find(100).key == 95
+    assert tree.find(50).key == 40
+    assert tree.find(39).key == 40
+    assert tree.find(15).key == 25
     
 def test_right_most_child():
     tree = Tree()
@@ -124,12 +118,7 @@ def test_right_most_child():
         value = chr(key)
         tree.insert(key, value)
     croot = tree.right_most_child(tree.root.left)
-    assert croot.parent.key == 25
     assert croot.key == 37
-    node = tree.find(13)
-    croot = tree.right_most_child(node.left)
-    assert croot.parent.key == 10
-    assert croot.key == 12
 
 def test_remove():
     tree = Tree()
@@ -142,27 +131,23 @@ def test_remove():
     
     tree.remove(38)
     assert tree.root.key == 37
-    assert tree.find(38) == None
+    assert tree.find(13).parent.key == 37
+    assert tree.find(51).parent.key == 37
+    assert tree.find(38).key == 40
     
     tree.remove(89)
-    print(tree.in_order())
-    p, c = tree.find_parent_croot(95)
-    assert p.key == 84
-    assert c.key == 95
+    assert tree.find(95).key == 95
+    assert tree.find(95).parent.key == 84
+    
     
     tree.remove(13)
-    print(tree.in_order())
-    p, c = tree.find_parent_croot(10)
-    assert p.key == 12
-    
-    tree.remove(10)
-    print(tree.in_order())
-    tree.remove(15)
-    print(tree.in_order())
-    p, c = tree.find_parent_croot(25)
-    assert p.key == 37
+    assert tree.find(13).key == 25
+    assert tree.find(12).parent.key == 37
+    assert tree.find(10).parent.key == 12
+    assert tree.find(25).parent.key == 12
 
-def test_remove():
+
+def test_remove2():
     tree = Tree()
     l = [38,13,51,10,25,40,84,12,37,66,89,95]
     length = len(l)
@@ -172,8 +157,10 @@ def test_remove():
             tree.insert(key, value)
     tree.remove(100)
     tree.remove(50)
-    tree.remove(13)
+    tree.remove(14)
     tree.remove(39)
+    assert len(tree.in_order()) == length
+
 
 def test_mirror():
     tree = Tree()
@@ -191,6 +178,7 @@ def test_mirror():
     assert level_order == [38,51,13,84,40,25,10,89,66,37,12,95]
     assert pre_order == [38,51,84,89,95,66,40,13,25,37,10,12]
 
+
 def test_print_paths():
     tree = Tree()
     l = [38,13,51,10,25,40,84,12,37,66,89,95]
@@ -205,6 +193,3 @@ def test_print_paths():
     assert l[2] == ' 38 51 40'
     assert l[3] == ' 38 51 84 66'
     assert l[4] == ' 38 51 84 89 95'
-
-
-
