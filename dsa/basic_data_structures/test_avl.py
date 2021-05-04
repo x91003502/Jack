@@ -50,22 +50,18 @@ def test_insert4():
         print(tree.in_order())
     assert tree.in_order() == [2,5,9,10,20]
     assert tree.level_order() == [10,5,20,2,9]
-# def test_insert2():
-#     tree = AVL()
-#     s = 100
-#     for i in range(0, s):
-#         tree.insert(i, i)
-    
-#     # try to insert again
-#     for i in range(0, 10):
-#         tree.insert(i, i+1)
-#     k = 0
-#     curr = tree.root
-#     while k < s:
-#         assert curr.key == k
-#         assert curr.left == None
-#         curr = curr.right
-#         k += 1
+
+def test_insert5():
+    tree = AVL()
+    l = [10,20,9,5,2,15,12]
+    length = len(l)
+    while len(l) > 0:
+        key = l.pop(0)
+        value = chr(key)
+        tree.insert(key, value)
+        print(tree.in_order())
+    assert tree.in_order() == [2,5,9,10,12,15,20]
+    assert tree.level_order() == [10,5,15,2,9,12,20]
 
 # def test_in_order():
 #     tree = AVL()

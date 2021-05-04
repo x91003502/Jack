@@ -237,22 +237,3 @@ class AVL(object):
             self.recur_print_paths(croot.left, s, l)
         if croot.right is not None:
             self.recur_print_paths(croot.right, s, l)
-tree = AVL()
-l = [10,12,2,5,9,15,20]
-length = len(l)
-while len(l) > 0:
-    key = l.pop(0)
-    value = chr(key)
-    tree.insert(key, value)
-    print(f'in order {tree.in_order()}')
-    print(f'level order {tree.level_order()}')
-# tree = AVL()
-# l = [5,4,3,2]
-# l = [2,4,3]
-# l = [1,2,3]
-# length = len(l)
-# while len(l) > 0:
-#     key = l.pop(0)
-#     value = chr(key)
-#     tree.insert(key, value)
-#     print(f'level order {tree.level_order()}')
