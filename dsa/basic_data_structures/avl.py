@@ -63,7 +63,13 @@ class AVL(object):
             self.root = subroot
             subroot.parent = None
         else:
-            parent.left = subroot
+            # if parent.left == croot
+            if parent.left == croot:
+                parent.left = subroot
+            # if parent.right == croot
+            elif parent.right == croot:
+                parent.right = subroot
+            
             subroot.parent = parent
 
     def right_rotation(self, croot):
@@ -77,9 +83,15 @@ class AVL(object):
             self.root = subroot
             subroot.parent = None
         else:
-            parent.right = subroot
+            # if parent.left == croot
+            if parent.left == croot:
+                parent.left = subroot
+            # if parent.right == croot
+            elif parent.right == croot:
+                parent.right = subroot
+            
             subroot.parent = parent
-
+            
     def find(self, key):
         return self.recur_find(self.root, key)
     
@@ -225,14 +237,22 @@ class AVL(object):
             self.recur_print_paths(croot.left, s, l)
         if croot.right is not None:
             self.recur_print_paths(croot.right, s, l)
-
 tree = AVL()
-# l = [5,4,3,2]
-# l = [2,4,3]
-l = [1,2,3]
+l = [10,12,2,5,9,15,20]
 length = len(l)
 while len(l) > 0:
     key = l.pop(0)
     value = chr(key)
     tree.insert(key, value)
+    print(f'in order {tree.in_order()}')
     print(f'level order {tree.level_order()}')
+# tree = AVL()
+# l = [5,4,3,2]
+# l = [2,4,3]
+# l = [1,2,3]
+# length = len(l)
+# while len(l) > 0:
+#     key = l.pop(0)
+#     value = chr(key)
+#     tree.insert(key, value)
+#     print(f'level order {tree.level_order()}')
