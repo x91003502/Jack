@@ -127,16 +127,26 @@ class AVL(object):
     
     def zero_one_child_remove(self, croot):
         parent = croot.parent
-        if parent.left is not None and parent.left.key == croot.key:
-            if croot.left is None:
-                parent.left = croot.right
-            else:
-                parent.left = croot.left
-        elif parent.right is not None and parent.right.key == croot.key:
-            if croot.left is None:
-                parent.right = croot.right
-            else:
-                parent.right = croot.left
+        if parent is not None:
+            if parent.left is not None and parent.left.key == croot.key:
+                if croot.left is None:
+                    parent.left = croot.right
+                else:
+                    parent.left = croot.left
+            elif parent.right is not None and parent.right.key == croot.key:
+                if croot.left is None:
+                    parent.right = croot.right
+                else:
+                    parent.right = croot.left
+        else:
+            if croot.left is not None and croot.right is None:
+                self.root = croot.left
+                self.root.parent = None
+            elif croot.right is not None and croot.left is None:
+                self.root = croot.right
+                self.root.parent = None
+            elif croot.right is None and croot.left is None:
+                self.root = None
     
     def right_most_child(self, croot):
         if croot.right is None: return croot
