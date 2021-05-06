@@ -64,25 +64,32 @@ class Tree(object):
     
     def zero_one_child_remove(self, croot):
         parent = croot.parent
-        if parent.left is not None and parent.left.key == croot.key:
-            if croot.left is None:
-                parent.left = croot.right
-                if croot.right is not None:
-                    croot.right.parent = parent
-            else:
-                parent.left = croot.left
-                if croot.left is not None:
-                    croot.left.parent = parent
+        if parent is not None:
+            if parent.left is not None and parent.left.key == croot.key:
+                if croot.left is None:
+                    parent.left = croot.right
+                    if croot.right is not None:
+                        croot.right.parent = parent
+                else:
+                    parent.left = croot.left
+                    if croot.left is not None:
+                        croot.left.parent = parent
+            
+            elif parent.right is not None and parent.right.key == croot.key:
+                if croot.left is None:
+                    parent.right = croot.right
+                    if croot.right is not None:
+                        croot.right.parent = parent
+                else:
+                    parent.right = croot.left
+                    if croot.left is not None:
+                        croot.left.parent = parent
+        else:
+            if croot.left is not None and croot.right is None:
+                self.root = croot.left
+            elif croot.right is not None and croot.left is None:
+                self.root = croot.right
                 
-        elif parent.right is not None and parent.right.key == croot.key:
-            if croot.left is None:
-                parent.right = croot.right
-                if croot.right is not None:
-                    croot.right.parent = parent
-            else:
-                parent.right = croot.left
-                if croot.left is not None:
-                    croot.left.parent = parent
     
     def right_most_child(self, croot):
         if croot.right is None: return croot

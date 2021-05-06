@@ -162,6 +162,16 @@ def test_remove2():
     assert len(tree.in_order()) == length
 
 
+def test_remove3():
+    tree = Tree()
+    s = 100
+    for i in range(0, s):
+        tree.insert(i, i)
+    
+    for i in range(0, s):
+        tree.remove(i)
+
+
 def test_mirror():
     tree = Tree()
     l = [38,13,51,10,25,40,84,12,37,66,89,95]
