@@ -63,6 +63,28 @@ def test_insert5():
     assert tree.in_order() == [2,5,9,10,12,15,20]
     assert tree.level_order() == [10,5,15,2,9,12,20]
 
+def test_insert6():
+    l = list()
+    for i in range(0, 200):
+        l.append(i)
+    tree = AVL()
+    while len(l) > 0:
+        key = l.pop(0)
+        value = chr(key)
+        tree.insert(key, value)
+    
+    l = list()
+    for i in range(0, 200):
+        l.append(i)
+    while len(l) > 0:
+        key = l.pop(0)
+        croot = tree.find(key)
+        left_height = tree.recur_height(croot.left)
+        right_height = tree.recur_height(croot.right)
+        assert abs(left_height-right_height) <= 1
+        assert tree.recur_is_balanced(croot) == True
+
+
 # def test_in_order():
 #     tree = AVL()
 #     s = 100

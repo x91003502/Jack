@@ -96,6 +96,7 @@ class AVL(object):
         return self.recur_find(self.root, key)
     
     def recur_find(self, croot, key):
+        if key == croot.key: return croot
         if key < croot.key and croot.left is not None:
             return self.recur_find(croot.left, key)
         elif key < croot.key and croot.left is None:
@@ -107,9 +108,6 @@ class AVL(object):
         elif key > croot.key and croot.right is None:
             print(f'key {key} not found, return a parent node {croot.key}')
             return croot
-        
-        if croot.left.key == key: return croot.left
-        if croot.right.key == key: return croot.right
     
     def remove(self, key):
         croot = self.find(key)
@@ -194,12 +192,9 @@ class AVL(object):
     def recur_is_balanced(self, croot):
         b = self.is_balanced(croot)
         if b is True and croot.parent != None:
-            return self.is_balanced(croot.parent)
+            return self.recur_is_balanced(croot.parent)
         else:
             return b
-        # elif isinstance(b, TreeNode)
-        #     print('find lowest unbalanced tree')
-        #     return croot
     
     def is_balanced(self, croot):
         h_left = self.recur_height(croot.left)
