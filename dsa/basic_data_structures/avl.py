@@ -28,29 +28,8 @@ class AVL(object):
                 croot.left = TreeNode(key, value, croot)
             else:
                 croot.right = TreeNode(key, value, croot)
-            node = self.recur_is_balanced(croot)
-            if isinstance(node, TreeNode):
-                print(f'not balanced, lowest unbalanced root found : {node.key}')
-                
-                # if right subtree is higher
-                if self.recur_height(node.right) > self.recur_height(node.left): 
-                    if self.recur_height(node.right.right) > self.recur_height(node.right.left):
-                        print('left rotation')
-                        self.left_rotation(node)
-                    else:
-                        print('right left rotation')
-                        self.right_rotation(node.right)
-                        self.left_rotation(node)
-                
-                # if left subtree is higher
-                else:
-                    if self.recur_height(node.left.left) > self.recur_height(node.left.right):
-                        print('right rotation')
-                        self.right_rotation(node)
-                    else:
-                        print('left right rotation')
-                        self.left_rotation(node.right)
-                        self.right_rotation(node)
+            
+            self.rebalance(croot)
     
     def left_rotation(self, croot):
         subroot = croot.right
@@ -91,7 +70,32 @@ class AVL(object):
                 parent.right = subroot
             
             subroot.parent = parent
+    
+    def rebalance(self, croot):
+        node = self.recur_is_balanced(croot)
+        if isinstance(node, TreeNode):
+            print(f'not balanced, lowest unbalanced root found : {node.key}')
             
+            # if right subtree is higher
+            if self.recur_height(node.right) > self.recur_height(node.left): 
+                if self.recur_height(node.right.right) > self.recur_height(node.right.left):
+                    print('left rotation')
+                    self.left_rotation(node)
+                else:
+                    print('right left rotation')
+                    self.right_rotation(node.right)
+                    self.left_rotation(node)
+            
+            # if left subtree is higher
+            else:
+                if self.recur_height(node.left.left) > self.recur_height(node.left.right):
+                    print('right rotation')
+                    self.right_rotation(node)
+                else:
+                    print('left right rotation')
+                    self.left_rotation(node.right)
+                    self.right_rotation(node)
+    
     def find(self, key):
         return self.recur_find(self.root, key)
     
