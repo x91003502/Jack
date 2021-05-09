@@ -30,7 +30,11 @@ class Tree(object):
                 croot.right = TreeNode(key, value, croot)
     
     def find(self, key):
-        return self.recur_find(self.root, key)
+        if self.root is None:
+            print('Empty tree')
+            return None
+        else:
+            return self.recur_find(self.root, key)
     
     def recur_find(self, croot, key):
         if key == croot.key: return croot
@@ -87,8 +91,12 @@ class Tree(object):
         else:
             if croot.left is not None and croot.right is None:
                 self.root = croot.left
+                croot.left.parent = None
             elif croot.right is not None and croot.left is None:
                 self.root = croot.right
+                croot.right.parent = None
+            elif croot.right is None and croot.right is None:
+                self.root = None
                 
     
     def right_most_child(self, croot):

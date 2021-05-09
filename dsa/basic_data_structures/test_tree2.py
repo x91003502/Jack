@@ -172,6 +172,29 @@ def test_remove3():
         tree.remove(i)
 
 
+import random
+def test_remove4():
+    
+    tree = Tree()
+    l = list()
+    s = 100
+    for i in range(0, s):
+        tree.insert(i, i)
+
+    for i in range(0, s):
+        l.append(i)
+    random.shuffle(l)
+    
+    size = 100
+    while len(l) > 1:
+        key = l.pop()
+        tree.remove(key)
+        size -= 1
+        assert len(tree.in_order()) == size
+        croot = tree.find(key)
+        assert croot.key != key
+
+
 def test_mirror():
     tree = Tree()
     l = [38,13,51,10,25,40,84,12,37,66,89,95]
