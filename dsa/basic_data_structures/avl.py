@@ -35,6 +35,8 @@ class AVL(object):
         subroot = croot.right
         parent = croot.parent
         croot.right = subroot.left
+        if subroot.left is not None:
+            subroot.left.parent = croot
         subroot.left = croot
         croot.parent = subroot
 
@@ -42,10 +44,8 @@ class AVL(object):
             self.root = subroot
             subroot.parent = None
         else:
-            # if parent.left == croot
             if parent.left == croot:
                 parent.left = subroot
-            # if parent.right == croot
             elif parent.right == croot:
                 parent.right = subroot
             
@@ -55,6 +55,8 @@ class AVL(object):
         subroot = croot.left
         parent = croot.parent
         croot.left = subroot.right
+        if subroot.right is not None:
+            subroot.right.parent = croot
         subroot.right = croot
         croot.parent = subroot
 
@@ -62,10 +64,8 @@ class AVL(object):
             self.root = subroot
             subroot.parent = None
         else:
-            # if parent.left == croot
             if parent.left == croot:
                 parent.left = subroot
-            # if parent.right == croot
             elif parent.right == croot:
                 parent.right = subroot
             
@@ -93,7 +93,7 @@ class AVL(object):
                     self.right_rotation(node)
                 else:
                     print('left right rotation')
-                    self.left_rotation(node.right)
+                    self.left_rotation(node.left)
                     self.right_rotation(node)
     
     def find(self, key):
@@ -115,7 +115,7 @@ class AVL(object):
     
     def remove(self, key):
         croot = self.find(key)
-        if croot is None:
+        if croot.key != key:
             print('key not found')
             return
         if croot.left is not None and croot.right is not None:
@@ -135,23 +135,36 @@ class AVL(object):
             if parent.left is not None and parent.left.key == croot.key:
                 if croot.left is None:
                     parent.left = croot.right
+                    if croot.right is not None:
+                        croot.right.parent = parent
                 else:
                     parent.left = croot.left
+                    if croot.left is not None:
+                        croot.left.parent = parent
+            
             elif parent.right is not None and parent.right.key == croot.key:
                 if croot.left is None:
                     parent.right = croot.right
+                    if croot.right is not None:
+                        croot.right.parent = parent
                 else:
                     parent.right = croot.left
+                    if croot.left is not None:
+                        croot.left.parent = parent
+            
+            while parent is not None:
+                self.rebalance(parent)
+                parent = parent.parent
         else:
             if croot.left is not None and croot.right is None:
                 self.root = croot.left
-                self.root.parent = None
+                croot.left.parent = None
             elif croot.right is not None and croot.left is None:
                 self.root = croot.right
-                self.root.parent = None
-            elif croot.right is None and croot.left is None:
+                croot.right.parent = None
+            elif croot.right is None and croot.right is None:
                 self.root = None
-    
+
     def right_most_child(self, croot):
         if croot.right is None: return croot
         else: return self.right_most_child(croot.right)
