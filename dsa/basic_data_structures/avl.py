@@ -87,7 +87,7 @@ class AVL(object):
                     self.left_rotation(node)
             
             # if left subtree is higher
-            else:
+            elif self.recur_height(node.right) < self.recur_height(node.left): 
                 if self.recur_height(node.left.left) > self.recur_height(node.left.right):
                     print('right rotation')
                     self.right_rotation(node)
@@ -229,8 +229,17 @@ class AVL(object):
         if abs(h_left-h_right) <= 1:
             return True
         else:
-            return croot   
+            return croot
     
+    def check_balanced(self, croot):
+        if croot is None: return True
+        h_left = self.recur_height(croot.left)
+        h_right = self.recur_height(croot.right)
+        if abs(h_left-h_right) <= 1 and self.check_balanced(croot.left) is True and self.check_balanced(croot.right) is True:
+            return True
+        return False
+
+
     def mirror(self):
         if self.root is None: return
         self.recur_mirror(self.root)
@@ -253,9 +262,32 @@ class AVL(object):
     def recur_print_paths(self, croot, s, l):
         s = f'{s} {croot.key}'
         if croot.left is None and croot.right is None:
-            # print(s)
             l.append(s)
         if croot.left is not None:
             self.recur_print_paths(croot.left, s, l)
         if croot.right is not None:
             self.recur_print_paths(croot.right, s, l)
+
+import random
+tree = AVL()
+s = 200
+l = list()
+for i in range(0, s):
+    l.append(i)
+random.shuffle(l)
+
+while len(l) > 1:
+    key = l.pop(0)
+    value = key
+    tree.insert(key, value)
+
+l = list()
+for i in range(0, s):
+    l.append(i)
+random.shuffle(l)
+while len(l) > 1:
+    key = l.pop(0)
+    tree.remove(key)
+    b = tree.check_balanced(tree.root)
+    if b is False:
+        print('check balanced : ', b)
