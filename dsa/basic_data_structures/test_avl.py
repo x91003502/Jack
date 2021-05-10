@@ -84,10 +84,24 @@ def test_insert6():
         assert abs(left_height-right_height) <= 1
         assert tree.recur_is_balanced(croot) == True
 
+import random
 def test_remove():
     tree = AVL()
-    s = 10
+    s = 20
+    l = list()
     for i in range(0, s):
-        tree.insert(i, i)
+        l.append(i)
+    random.shuffle(l)
+    
+    while len(l) > 1:
+        key = l.pop(0)
+        value = key
+        tree.insert(key, value)
+    
+    l = list()
     for i in range(0, s):
-        tree.remove(i)
+        l.append(i)
+    random.shuffle(l)
+    while len(l) > 1:
+        key = l.pop(0)
+        tree.remove(key)
