@@ -77,23 +77,22 @@ class AVL(object):
             print(f'not balanced, lowest unbalanced root found : {node.key}')
             
             # if right subtree is higher
-            if self.recur_height(node.right) > self.recur_height(node.left): 
-                if self.recur_height(node.right.right) > self.recur_height(node.right.left):
-                    print('left rotation')
-                    self.left_rotation(node)
-                else:
+            if self.recur_height(node.right) > self.recur_height(node.left):
+                if self.recur_height(node.right.left) > self.recur_height(node.right.right):
                     print('right left rotation')
                     self.right_rotation(node.right)
                     self.left_rotation(node)
+                else:
+                    print('left rotation')
+                    self.left_rotation(node)
             
             # if left subtree is higher
-            elif self.recur_height(node.right) < self.recur_height(node.left): 
-                if self.recur_height(node.left.left) > self.recur_height(node.left.right):
-                    print('right rotation')
-                    self.right_rotation(node)
-                else:
+            elif self.recur_height(node.right) < self.recur_height(node.left):
+                if self.recur_height(node.left.right) > self.recur_height(node.left.left):
                     print('left right rotation')
                     self.left_rotation(node.left)
+                    self.right_rotation(node)
+                else:
                     self.right_rotation(node)
     
     def find(self, key):
@@ -151,10 +150,6 @@ class AVL(object):
                     parent.right = croot.left
                     if croot.left is not None:
                         croot.left.parent = parent
-            
-            while parent is not None:
-                self.rebalance(parent)
-                parent = parent.parent
         else:
             if croot.left is not None and croot.right is None:
                 self.root = croot.left
@@ -164,7 +159,24 @@ class AVL(object):
                 croot.right.parent = None
             elif croot.right is None and croot.right is None:
                 self.root = None
-
+        
+        while parent is not None:
+            b = self.check_balanced(parent)
+            # h_left = self.recur_height(parent.left)
+            # h_right = self.recur_height(parent.right)
+            # print(f'h_left : {h_left}, h_right : {h_right}')
+            self.rebalance(parent)
+            parent = parent.parent
+            b = self.check_balanced(parent)
+        
+        bn = self.check_balanced(self.root)
+        if bn is False:
+            self.check_balanced(self.root)
+            # h_left = self.recur_height(parent.left)
+            # h_right = self.recur_height(parent.right)
+            # print(f'h_left : {h_left}, h_right : {h_right}')
+            print('============================================= Bug')
+    
     def right_most_child(self, croot):
         if croot.right is None: return croot
         else: return self.right_most_child(croot.right)
@@ -267,27 +279,3 @@ class AVL(object):
             self.recur_print_paths(croot.left, s, l)
         if croot.right is not None:
             self.recur_print_paths(croot.right, s, l)
-
-import random
-tree = AVL()
-s = 200
-l = list()
-for i in range(0, s):
-    l.append(i)
-random.shuffle(l)
-
-while len(l) > 1:
-    key = l.pop(0)
-    value = key
-    tree.insert(key, value)
-
-l = list()
-for i in range(0, s):
-    l.append(i)
-random.shuffle(l)
-while len(l) > 1:
-    key = l.pop(0)
-    tree.remove(key)
-    b = tree.check_balanced(tree.root)
-    if b is False:
-        print('check balanced : ', b)

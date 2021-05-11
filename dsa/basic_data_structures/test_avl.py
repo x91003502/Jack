@@ -4,7 +4,23 @@ from avl import AVL
 
 LOGGER = logging.getLogger(__name__)
 
-def test_insert():
+def test_insert0():
+    tree = AVL()
+    l = [5,15,10]
+    length = len(l)
+    while len(l) > 0:
+        key = l.pop(0)
+        value = chr(key)
+        # print(tree.in_order())
+        tree.insert(key, value)
+        print(tree.in_order())
+        print(tree.level_order())
+        print("="*20)
+    assert tree.root.key == 10
+    assert tree.in_order() == [5,10,15]
+    assert tree.level_order() == [10,5,15]
+
+def test_insert1():
     tree = AVL()
     l = [5,10,15]
     length = len(l)
@@ -64,8 +80,9 @@ def test_insert5():
     assert tree.level_order() == [10,5,15,2,9,12,20]
 
 def test_insert6():
+    s = 1000
     l = list()
-    for i in range(0, 200):
+    for i in range(0, s):
         l.append(i)
     tree = AVL()
     while len(l) > 0:
@@ -73,8 +90,7 @@ def test_insert6():
         value = chr(key)
         tree.insert(key, value)
     
-    l = list()
-    for i in range(0, 200):
+    for i in range(0, s):
         l.append(i)
     while len(l) > 0:
         key = l.pop(0)
@@ -87,7 +103,7 @@ def test_insert6():
 import random
 def test_remove():
     tree = AVL()
-    s = 20
+    s = 200
     l = list()
     for i in range(0, s):
         l.append(i)
@@ -97,6 +113,7 @@ def test_remove():
         key = l.pop(0)
         value = key
         tree.insert(key, value)
+        assert tree.check_balanced(tree.root) == True
     
     l = list()
     for i in range(0, s):
@@ -105,3 +122,4 @@ def test_remove():
     while len(l) > 1:
         key = l.pop(0)
         tree.remove(key)
+        assert tree.check_balanced(tree.root) == True
