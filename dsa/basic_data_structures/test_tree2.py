@@ -171,9 +171,17 @@ def test_remove3():
     for i in range(0, s):
         tree.remove(i)
 
+def test_remove4():
+    tree = Tree()
+    s = 100
+    for i in reversed(range(0, s)):
+        tree.insert(i, i)
+    
+    for i in reversed(range(0, s)):
+        tree.remove(i)
 
 import random
-def test_remove4():
+def test_remove5():
     
     tree = Tree()
     l = list()

@@ -192,6 +192,23 @@ def test_remove2():
     tree.remove(13)
     tree.remove(39)
 
+import random
+def test_remove3():
+    
+    tree = Tree()
+    l = list()
+    s = 50
+    for i in range(0, s):
+        tree.insert(i, i)
+
+    for i in range(0, s):
+        l.append(i)
+    random.shuffle(l)
+    
+    while len(l) > 0:
+        key = l.pop()
+        tree.remove(key)
+        print(tree.in_order())
 
 def test_mirror():
     tree = Tree()
