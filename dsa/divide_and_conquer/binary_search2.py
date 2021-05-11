@@ -21,13 +21,16 @@ def binary_search_lower_bound(arr, target):
             curr_diff = abs(arr[mid]-target)
             cand_idx = mid
             diff = curr_diff
-    return cand_idx
+    # target should be equal or higher than lower bound arr[cand_idx]
+    if target >= arr[cand_idx]:
+        return cand_idx
+    else: return -1
+    
 
 def binary_search_upper_bound(arr, target):
     lo = 0
     hi = len(arr)-1
     cand_idx = len(arr)-1
-    diff = sys.maxsize
     while hi >= lo:
         mid = math.floor((lo+hi)/2)
         if target == arr[mid]:
@@ -39,12 +42,14 @@ def binary_search_upper_bound(arr, target):
             diff = curr_diff
         else:
             lo = mid+1
-    return cand_idx
+    # target should be equal or less than upper bound arr[cand_idx]
+    if target <= arr[cand_idx]:
+        return cand_idx
+    else: return sys.maxsize
 
 arr = [1,6,11]
 # arr = [-100,0,100]
-index1 = binary_search_upper_bound(arr, 7)
-print(f'index1 : {index1}')
-index2 = binary_search_lower_bound(arr, 10)
+index1 = binary_search_upper_bound(arr, 12)
+index2 = binary_search_lower_bound(arr, 13)
 print(f'index1 : {index1} index2 : {index2}')
     
