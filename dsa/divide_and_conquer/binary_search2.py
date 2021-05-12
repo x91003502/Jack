@@ -13,7 +13,7 @@ def binary_search_lower_bound(arr, target):
         mid = math.floor((lo+hi)/2)
         if target == arr[mid]:
             return mid
-         # update candiate
+        # update candiate
         elif target < arr[mid]:
             hi = mid-1
         else:
@@ -39,7 +39,6 @@ def binary_search_upper_bound(arr, target):
             hi = mid-1
             curr_diff = abs(arr[mid]-target)
             cand_idx = mid
-            diff = curr_diff
         else:
             lo = mid+1
     # target should be equal or less than upper bound arr[cand_idx]
@@ -47,9 +46,14 @@ def binary_search_upper_bound(arr, target):
         return cand_idx
     else: return sys.maxsize
 
-arr = [1,6,11]
-# arr = [-100,0,100]
-index1 = binary_search_upper_bound(arr, 12)
-index2 = binary_search_lower_bound(arr, 13)
-print(f'index1 : {index1} index2 : {index2}')
-    
+def range_search(arr, range):
+    # arr should be sorted
+    index1 = binary_search_upper_bound(arr, range[0])
+    index2 = binary_search_lower_bound(arr, range[1])
+    # print(f'index1 : {index1} index2 : {index2}') 
+    if index1 <= index2:
+        print('in range')
+    return index1, index2
+
+# print(range_search([-100,10,100],[-10,10]))
+
