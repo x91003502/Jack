@@ -123,3 +123,46 @@ def test_remove():
         key = l.pop(0)
         tree.remove(key)
         assert tree.check_balanced(tree.root) == True
+
+def test_find_smaller1():
+    tree = AVL()
+    for i in range(0,10):
+        res = tree.find_leq(i)
+        assert len(res) == 0
+    tree.insert(10, 10)
+    for i in range(0,10):
+        res = tree.find_leq(i)
+        assert len(res) == 0
+    res = tree.find_leq(10)
+    assert res == [10]
+    
+def test_find_smaller2():
+    tree = AVL()
+    l = [7,4,10,2,6,9,14,12,16]
+    while len(l) > 0:
+        key = l.pop(0)
+        value = chr(key)
+        tree.insert(key, value)
+    res = tree.find_leq(10)
+    res.sort()
+    assert res == [2,4,6,7,9,10]
+    
+    res = tree.find_leq(7)
+    res.sort()
+    assert res == [2,4,6,7]
+    
+    res = tree.find_leq(4)
+    res.sort()
+    assert res == [2,4]
+    
+    res = tree.find_leq(17)
+    res.sort()
+    assert res == [2,4,6,7,9,10,12,14,16]
+    
+    res = tree.find_leq(8)
+    res.sort()
+    assert res == [2,4,6,7]
+    
+    res = tree.find_leq(11)
+    res.sort()
+    assert res == [2,4,6,7,9,10]

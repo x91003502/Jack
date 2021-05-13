@@ -96,6 +96,9 @@ class AVL(object):
                     self.right_rotation(node)
     
     def find(self, key):
+        if self.root is None:
+            print('empty tree')
+            return None
         return self.recur_find(self.root, key)
     
     def recur_find(self, croot, key):
@@ -279,3 +282,16 @@ class AVL(object):
             self.recur_print_paths(croot.left, s, l)
         if croot.right is not None:
             self.recur_print_paths(croot.right, s, l)
+    
+    def find_leq(self, key):
+        # find less than or equal
+        croot = self.find(key)
+        l = list()
+        while croot is not None and croot.key > key:
+            croot = croot.parent
+        
+        while croot is not None and croot.key <= key:
+            l.append(croot.key)
+            self.recur_in_order(croot.left, l)
+            croot = croot.parent
+        return l
