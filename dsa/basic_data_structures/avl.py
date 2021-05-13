@@ -295,3 +295,13 @@ class AVL(object):
             self.recur_in_order(croot.left, l)
             croot = croot.parent
         return l
+    
+    def find_geq(self, key):
+        croot = self.find(key)
+        l = list()
+        while croot is not None:
+            if croot.key >= key:
+                l.append(croot.key)
+                self.recur_in_order(croot.right, l)
+            croot = croot.parent
+        return l

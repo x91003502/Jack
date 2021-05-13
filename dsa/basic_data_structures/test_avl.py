@@ -124,7 +124,7 @@ def test_remove():
         tree.remove(key)
         assert tree.check_balanced(tree.root) == True
 
-def test_find_smaller1():
+def test_find_leq1():
     tree = AVL()
     for i in range(0,10):
         res = tree.find_leq(i)
@@ -135,8 +135,8 @@ def test_find_smaller1():
         assert len(res) == 0
     res = tree.find_leq(10)
     assert res == [10]
-    
-def test_find_smaller2():
+
+def test_find_leq2():
     tree = AVL()
     l = [7,4,10,2,6,9,14,12,16]
     while len(l) > 0:
@@ -166,3 +166,22 @@ def test_find_smaller2():
     res = tree.find_leq(11)
     res.sort()
     assert res == [2,4,6,7,9,10]
+
+def test_find_geq1():
+    tree = AVL()
+    l = [7,4,10,2,6,9,14,12,16]
+    while len(l) > 0:
+        key = l.pop(0)
+        value = chr(key)
+        tree.insert(key, value)
+    res = tree.find_geq(10)
+    res.sort()
+    assert res == [10,12,14,16]
+    
+    res = tree.find_geq(5)
+    res.sort()
+    assert res == [6,7,9,10,12,14,16]
+    
+    res = tree.find_geq(1)
+    res.sort()
+    assert res == [2,4,6,7,9,10,12,14,16]
