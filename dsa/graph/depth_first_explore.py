@@ -5,10 +5,10 @@ def depth_first_explore(G, visited, v):
     print(f'mark vertex : "{v}" visited')
     if G[v]:
         for e in G[v]:
-            u, weight = e[0], e[1]
-            if visited[u] == False:
-                print(f'try to explore vertex "{v}" neighbor : vertex "{u}"')
-                depth_first_explore(G, visited, u)
+            w, weight = e[0], e[1]
+            if visited[w] == False:
+                print(f'try to explore vertex "{v}" neighbor : vertex "{w}"')
+                depth_first_explore(G, visited, w)
 
 G = defaultdict(str)
 add_vertex(G, 'a')

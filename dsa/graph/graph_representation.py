@@ -7,9 +7,9 @@ def add_vertex(G, v):
         print(f'add vertex "{v}" in graph')
         G[v] = list()
 
-def add_edge(G, v, u, weight=0):
+def add_edge(G, v, w, weight=0):
     if v in G:
-        edge = [u, weight]
+        edge = [w, weight]
         G[v].append(edge)
     else:
         print(f'vertex "{v}" is not stored in graph')
@@ -19,7 +19,7 @@ def print_graph(G):
         print(f'vertex : {v}')
         if G[v]:
             for e in G[v]:
-                u, weight = e[0], e[1]
-                print(f'    {v} -> {u}    |    edge weight : {weight}')
+                w, weight = e[0], e[1]
+                print(f'    {v} -> {w}    |    edge weight : {weight}')
         else:
             print(f'    no edge')
