@@ -13,7 +13,6 @@ def depth_first_explore(G, visited, v):
                 depth_first_explore(G, visited, w)
     postvisit(v)
 
-
 def DFS(G):
     visited = dict()
     
@@ -42,6 +41,23 @@ def postvisit(v):
     global clock
     post[v] = clock
     clock += 1
+
+def is_valid_prepost(pre, post):
+    '''
+    Check if previst and postvist are valid in the "SAME" connected component.
+    '''
+    assert len(pre) == len(post)
+    keys = list()
+    for key in pre.keys():
+        keys.append(key)
+    for i in range(len(keys)):
+        for j in range(i+1, len(pre)):
+            k1 = keys[i]
+            k2 = keys[j]
+            if pre[k1] < pre[k2]:
+                assert post[k1] > post[k2]
+            elif pre[k1] > pre[k2]:
+                assert post[k1] < post[k2]
 
 
 G = defaultdict(str)
