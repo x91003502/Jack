@@ -1,5 +1,5 @@
 from collections import defaultdict
-from dsa.graph.graph_representation import add_vertex, add_edge, print_graph
+from dsa.graph.graph_representation import add_vertex, add_edge
 
 def depth_first_explore(G, visited, v):
     visited[v] = True
@@ -44,7 +44,7 @@ def postvisit(v):
 
 def is_valid_prepost(pre, post):
     '''
-    Check if previst and postvist are valid in the "SAME" connected component.
+    Check if previst and postvist sets are valid in the "SAME" connected component.
     '''
     assert len(pre) == len(post)
     keys = list()
