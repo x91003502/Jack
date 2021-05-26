@@ -7,3 +7,9 @@ def depth_first_explore(G, visited, v):
             if visited[w] == False:
                 print(f'try to explore vertex "{v}" neighbor : vertex "{w}"')
                 depth_first_explore(G, visited, w)
+    l = list()
+    for u in visited:
+        if visited[u] is True:
+            l.append(u)
+        else: continue
+    return l
