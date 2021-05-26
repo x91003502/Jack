@@ -1,23 +1,5 @@
 from collections import defaultdict
-from dsa.graph.graph_representation import add_vertex, add_edge
-from dsa.graph.dfs2 import DFS, previsit, postvisit
-
-
-G = defaultdict(str)
-add_vertex(G, 'a')
-add_vertex(G, 'b')
-add_vertex(G, 'c')
-add_vertex(G, 'd')
-add_vertex(G, 'e')
-
-add_edge(G, 'a', 'b')
-add_edge(G, 'b', 'c')
-add_edge(G, 'c', 'd')
-
-add_edge(G, 'a', 'd')
-
-add_edge(G, 'a', 'e')
-add_edge(G, 'e', 'd')
+from dsa.graph.utils.graph_representation import add_vertex, add_edge
 
 def find_sink(G, v):
     n_edge = len(G[v])
@@ -37,6 +19,51 @@ def find_sink(G, v):
 def naive_topological_sort(G, src):
     l = list()
     while len(G) > 0:
-        l.insert(0, find_sink(G, src))
+        l.append(find_sink(G, src))
     return l
+
+G = defaultdict(str)
+add_vertex(G, 'a')
+add_vertex(G, 'b')
+add_vertex(G, 'c')
+add_vertex(G, 'd')
+add_vertex(G, 'e')
+
+add_edge(G, 'a', 'b')
+add_edge(G, 'b', 'c')
+add_edge(G, 'c', 'd')
+
+add_edge(G, 'a', 'd')
+
+add_edge(G, 'a', 'e')
+add_edge(G, 'e', 'd')
 print(naive_topological_sort(G, 'a'))
+
+# %% Topological sort using dfs
+from collections import defaultdict
+from dsa.graph.utils.graph_representation import add_vertex, add_edge
+from dsa.graph.utils.dfs2 import DFS, pre, post
+
+G = defaultdict(str)
+add_vertex(G, 'a')
+add_vertex(G, 'b')
+add_vertex(G, 'c')
+add_vertex(G, 'd')
+add_vertex(G, 'e')
+
+add_edge(G, 'a', 'b')
+add_edge(G, 'b', 'c')
+add_edge(G, 'c', 'd')
+
+add_edge(G, 'a', 'd')
+
+add_edge(G, 'a', 'e')
+add_edge(G, 'e', 'd')
+
+def dfs_topological_sort(G):
+    DFS(G)
+    l = list()
+    for k in post:
+        l.append(k)
+    return l
+print(dfs_topological_sort(G))

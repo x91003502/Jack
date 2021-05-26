@@ -1,14 +1,6 @@
 from collections import defaultdict
-from dsa.graph.graph_representation import add_vertex, add_edge, print_graph
-def depth_first_explore(G, visited, v):
-    visited[v] = True
-    print(f'mark vertex : "{v}" visited')
-    if G[v]:
-        for e in G[v]:
-            w, weight = e[0], e[1]
-            if visited[w] == False:
-                print(f'try to explore vertex "{v}" neighbor : vertex "{w}"')
-                depth_first_explore(G, visited, w)
+from dsa.graph.utils.graph_representation import add_vertex, add_edge
+from dsa.graph.utils.depth_first_explore import depth_first_explore
 
 G = defaultdict(str)
 add_vertex(G, 'a')
