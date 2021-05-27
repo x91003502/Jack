@@ -57,3 +57,26 @@ def dfs_ssc(G):
         
         G = reverse_graph(GR) # update G, so no point to deleted vertices
         n_cc += 1
+
+def dfs_ssc2(G):
+    GR = reverse_graph(G)
+    
+    _, post = DFS(GR)
+
+    n_cc = 1
+    visited = dict()
+    post_list = list()
+    # the last item in the post(dictionary) must have the largest postvisit number
+    # larger postvisit number, later insert into the dictionary
+    # prove ?
+    for v in post:
+        post_list.append(v)
+        visited[v] = False
+    print(f'post order : {post_list}')
+    
+    for i in reversed(range(0, len(post_list))):
+        v = post_list[i]
+        if visited[v] is False:
+            visited_list = depth_first_explore(G, visited, v)
+            print(f'No. {n_cc} connected component {visited_list}')
+            n_cc += 1

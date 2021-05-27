@@ -33,4 +33,4 @@ visited['d'] = False
 visited['e'] = False
 
 
-depth_first_explore(G, visited, 'a')
+print(depth_first_explore(G, visited, 'a'))

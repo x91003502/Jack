@@ -1,7 +1,7 @@
 
 from collections import defaultdict
 from dsa.graph.utils.dfs import DFS
-from dsa.graph.utils.graph_representation import add_vertex, add_edge, print_graph
+from dsa.graph.utils.graph_representation import add_vertex, add_edge
 
 
 G = defaultdict(str)
