@@ -1,6 +1,6 @@
 from collections import defaultdict
 from dsa.graph.utils.graph_representation import add_vertex, add_edge
-from dsa.graph.utils.dfs2 import DFS, pre, post
+from dsa.graph.utils.dfs2 import DFS
 
 G = defaultdict(str)
 add_vertex(G, 'a')
@@ -29,6 +29,6 @@ add_edge(G, 'e', 'd')
 #      /   \            |
 #    b  ---  c          e
 
-DFS(G)
+pre, post = DFS(G)
 print(pre)
 print(post)

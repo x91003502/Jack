@@ -34,3 +34,26 @@ def naive_ssc(G):
                         visited[u] = True
             print(f'No. {n_cc} connected component {ssc}')
             n_cc += 1
+
+from dsa.graph.utils.dfs2 import DFS
+from dsa.graph.utils.reverse_graph import reverse_graph
+def dfs_ssc(G):
+    n_cc = 1
+    GR = reverse_graph(G)
+    while len(GR) > 0:
+        _, post = DFS(GR)
+        print(post)
+        sink = max(post, key=post.get) # source of GR == sink of G
+        print(f'sink : {sink} ')
+        
+        visited1 = dict()
+        for w in GR:
+            visited1[w] = False
+        
+        visited_list = depth_first_explore(G, visited1, sink)
+        print(f'No. {n_cc} connected component {visited_list}')
+        for v in visited_list:
+            del GR[v]
+        
+        G = reverse_graph(GR) # update G, so no point to deleted vertices
+        n_cc += 1

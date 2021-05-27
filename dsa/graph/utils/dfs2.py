@@ -1,18 +1,20 @@
-def depth_first_explore(G, visited, v):
+def depth_first_explore(G, visited, v, pre, post, clock):
     visited[v] = True
     print(f'mark vertex : "{v}" visited')
-    previsit(v)
+    previsit(v, pre, clock)
     if G[v]:
         for e in G[v]:
             w, weight = e[0], e[1]
             if visited[w] == False:
                 print(f'try to explore vertex "{v}" neighbor : vertex "{w}"')
-                depth_first_explore(G, visited, w)
-    postvisit(v)
+                depth_first_explore(G, visited, w, pre, post, clock)
+    postvisit(v, post, clock)
 
 def DFS(G):
     visited = dict()
-    
+    pre = dict()
+    post = dict()
+    clock = Clock()
     # mark all vertices unvisited
     for v in G:
         visited[v] = False
@@ -23,21 +25,26 @@ def DFS(G):
         if visited[v] == False:
             n_cc += 1
             print(f'try to explore vertex "{v}"')
-            depth_first_explore(G, visited, v)
+            depth_first_explore(G, visited, v, pre, post, clock)
     print(f'\n{n_cc} connected components')
+    return pre, post
 
-pre = dict()
-post = dict()
-clock = 1
-def previsit(v):
-    global clock
-    pre[v] = clock
-    clock += 1
+class Clock(object):
+    def __init__(self, count = 1):
+        self.count = count
+    def increment(self):
+        self.count += 1
 
-def postvisit(v):
-    global clock
-    post[v] = clock
-    clock += 1
+# pre = dict()
+# post = dict()
+# clock = 1
+def previsit(v, pre, clock):
+    pre[v] = clock.count
+    clock.increment()
+
+def postvisit(v, post, clock):
+    post[v] = clock.count
+    clock.increment()
 
 def is_valid_prepost(pre, post):
     '''

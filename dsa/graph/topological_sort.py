@@ -42,7 +42,7 @@ print(naive_topological_sort(G, 'a'))
 # %% Topological sort using dfs
 from collections import defaultdict
 from dsa.graph.utils.graph_representation import add_vertex, add_edge
-from dsa.graph.utils.dfs2 import DFS, pre, post
+from dsa.graph.utils.dfs2 import DFS
 
 G = defaultdict(str)
 add_vertex(G, 'a')
@@ -61,7 +61,7 @@ add_edge(G, 'a', 'e')
 add_edge(G, 'e', 'd')
 
 def dfs_topological_sort(G):
-    DFS(G)
+    _, post = DFS(G)
     l = list()
     for k in post:
         l.append(k)
