@@ -28,3 +28,45 @@ def bfs_shortest_path(G, s):
                 prev[w] = v
                 print(f'update distance of vertex "{w}" from {old_dist} to {new_dist}')
     return dist
+
+import sys
+def dijkstra(G, s):
+    dist, prev = dict(), dict()
+    
+    for v in G:
+        dist[v] = sys.maxsize
+        prev[v] = None
+    dist[s] = 0
+    unprocess = dist.copy()
+    while len(unprocess) > 0:
+        v = find_min_dist(unprocess)
+        del unprocess[v]
+        for e in G[v]:
+            w, weight = e[0], e[1]
+            new_dist = dist[v] + weight
+            if new_dist < dist[w]:
+                old_dist = dist[w]
+                dist[w] = new_dist
+                unprocess[w] = new_dist
+                prev[w] = v
+                print(f'update distance of vertex "{w}" from {old_dist} to {new_dist}')
+    return dist
+
+def compute_total_weight(G):
+    total_weight = 0
+    for v in G:
+        for e in G[v]:
+            w, weight = e[0], e[1]
+            total_weight += weight
+    return total_weight
+
+def find_min_dist(dist):
+    min_dist_value = sys.maxsize
+    min_dist_vertex = None
+    for v in dist:
+        dist_value = dist[v]
+        if dist_value < min_dist_value:
+            min_dist_value = dist_value
+            min_dist_vertex = v
+    print(f'found minimum distance vertex {min_dist_vertex} with distance : {min_dist_value}')
+    return min_dist_vertex
