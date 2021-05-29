@@ -1,4 +1,3 @@
-
 from collections import defaultdict
 from dsa.graph.utils.graph_representation import add_vertex, add_edge
 from dsa.graph.utils.bfs import BFS_path
@@ -76,12 +75,3 @@ assert BFS_path(G, 'S', 'f') == ['S', 'd', 'f']
 
 assert BFS_path(G, 'S', 'g') == ['S', 'a', 'b', 'g']
 assert BFS_path(G, 'S', 'h') == ['S', 'a', 'b', 'h']
-
-
-
-
-# assert BFS_path(G, 'S', '') == ['S', 'b']
-# assert BFS_path(G, 'S', 'b') == ['S', 'b']
-
-
-

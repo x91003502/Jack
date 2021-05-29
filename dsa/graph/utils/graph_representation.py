@@ -1,4 +1,5 @@
 from collections import defaultdict
+
 # Implement graph data structure by Python dictionary
 def add_vertex(G, v):
     if v in G:

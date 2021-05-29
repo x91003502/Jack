@@ -1,4 +1,5 @@
 from collections import deque
+
 def BFS(G, s):
     dist = dict()
     for v in G:
@@ -12,11 +13,10 @@ def BFS(G, s):
         for e in G[v]:
             w, weight = e[0], e[1]
             if dist[w] == -1:
-                print(f'discover vertex "{w}" in graph')
                 q.append(w)
                 dist[w] = dist[v] + 1
+                print(f'discover vertex "{w}" in graph')
     return dist
-
 
 def BFS2(G, s):
     dist, prev = dict(), dict()
@@ -32,10 +32,10 @@ def BFS2(G, s):
         for e in G[v]:
             w, weight = e[0], e[1]
             if dist[w] == -1:
-                print(f'discover vertex "{w}" in graph')
                 q.append(w)
                 dist[w] = dist[v] + 1
                 prev[w] = v
+                print(f'discover vertex "{w}" in graph')
     return dist, prev
 
 def BFS_path(G, s, u):

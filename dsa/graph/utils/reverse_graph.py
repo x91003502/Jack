@@ -1,5 +1,6 @@
 from collections import defaultdict
 from dsa.graph.utils.graph_representation import add_vertex, add_edge
+
 def reverse_graph(G):
     GR = defaultdict(str)
     for v in G:
