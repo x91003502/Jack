@@ -70,3 +70,38 @@ def find_min_dist(dist):
             min_dist_vertex = v
     print(f'found minimum distance vertex {min_dist_vertex} with distance : {min_dist_value}')
     return min_dist_vertex
+
+
+import sys
+import heapq
+def dijkstra2(G, s):
+    dist, prev, unprocess = dict(), dict(), dict()
+    
+    for v in G:
+        dist[v] = sys.maxsize
+        prev[v] = None
+        unprocess[v] = True
+    dist[s] = 0
+    pq = list()
+    for v in dist:
+        pq.append((dist[v], v))
+    heapq.heapify(pq)
+    
+    while len(unprocess) > 0:
+        while True:
+            tup = heapq.heappop(pq)
+            distance, v = tup[0], tup[1]
+            if v in unprocess:
+                break
+        print(f'found minimum distance vertex {v} with distance : {distance}')
+        del unprocess[v]
+        for e in G[v]:
+            w, weight = e[0], e[1]
+            new_dist = dist[v] + weight
+            if new_dist < dist[w]:
+                old_dist = dist[w]
+                dist[w] = new_dist
+                heapq.heappush(pq, (new_dist, w))
+                prev[w] = v
+                print(f'update distance of vertex "{w}" from {old_dist} to {new_dist}')
+    return dist
