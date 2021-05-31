@@ -1,4 +1,27 @@
+import sys
 from collections import deque
+
+def naive_shortest_path(G, s):
+    dist, prev = dict(), dict()
+    for v in G:
+        dist[v] = sys.maxsize
+        prev[v] = None
+    dist[s] = 0
+    make_change = True
+    
+    while make_change:
+        make_change = False
+        for v in G:
+            for e in G[v]:
+                w, weight = e[0], e[1]
+                new_dist = dist[v] + weight
+                if new_dist < dist[w]:
+                    make_change = True
+                    old_dist = dist[w]
+                    dist[w] = new_dist
+                    prev[w] = v
+                    print(f'update distance of vertex "{w}" from {old_dist} to {new_dist}')
+    return dist
 
 def bfs_shortest_path(G, s):
     dist, prev = dict(), dict()
@@ -29,7 +52,6 @@ def bfs_shortest_path(G, s):
                 print(f'update distance of vertex "{w}" from {old_dist} to {new_dist}')
     return dist
 
-import sys
 def dijkstra(G, s):
     dist, prev = dict(), dict()
     
@@ -71,8 +93,6 @@ def find_min_dist(dist):
     print(f'found minimum distance vertex {min_dist_vertex} with distance : {min_dist_value}')
     return min_dist_vertex
 
-
-import sys
 import heapq
 def dijkstra2(G, s):
     dist, prev, unprocess = dict(), dict(), dict()
@@ -88,6 +108,7 @@ def dijkstra2(G, s):
     heapq.heapify(pq)
     
     while len(unprocess) > 0:
+        # If v pop from heap is already processed before, ignore it and pop again.
         while True:
             tup = heapq.heappop(pq)
             distance, v = tup[0], tup[1]
@@ -101,6 +122,9 @@ def dijkstra2(G, s):
             if new_dist < dist[w]:
                 old_dist = dist[w]
                 dist[w] = new_dist
+                # update the new estimate distance of a vertex by adding a new item in heap
+                # because the new distance must be smaller than previous, it will on the upper of the heap
+                # and will be obtained before the old distance.
                 heapq.heappush(pq, (new_dist, w))
                 prev[w] = v
                 print(f'update distance of vertex "{w}" from {old_dist} to {new_dist}')
