@@ -39,7 +39,34 @@ def bellman_ford(G, s):
                     dist[w] = new_dist
                     prev[w] = v
                     print(f'update distance of vertex "{w}" from {old_dist} to {new_dist}')
-    return dist
+    
+    # negative cycle detection
+    has_neg_cycle = False
+    nv = None # vertex that is reachable from a negative cycle
+    for v in G:
+        for e in G[v]:
+            w, weight = e[0], e[1]
+            new_dist = dist[v] + weight
+            if new_dist < dist[w]:
+                has_neg_cycle = True
+                nv = w
+                print(f'detect a negative cycle  vertex "{nv}" is reachable from the negative cycle')
+    
+    if has_neg_cycle is not True:
+        return dist
+    else:
+        return find_negative_cycle(prev, nv)
+
+def find_negative_cycle(prev, nv):
+    start_vertex = nv
+    v = nv
+    neg_cycle = list()
+    while True:
+        neg_cycle.append(v)
+        v = prev[v]
+        if v == start_vertex:
+            break
+    return neg_cycle
 
 def bfs_shortest_path(G, s):
     dist, prev = dict(), dict()

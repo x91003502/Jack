@@ -29,3 +29,20 @@ index = 0
 for key in dist:
     assert dist[key] == answer[index]
     index += 1
+    
+# negative cycle example
+G = defaultdict(str)
+add_vertex(G, 'S')
+add_vertex(G, 'a')
+add_vertex(G, 'b')
+add_vertex(G, 'c')
+add_vertex(G, 'd')
+
+add_edge(G, 'S', 'a', weight=3)
+
+add_edge(G, 'a', 'b', weight=3)
+add_edge(G, 'b', 'c', weight=-2)
+add_edge(G, 'c', 'a', weight=-2)
+
+add_edge(G, 'b', 'd', weight=3)
+dist = bellman_ford(G, 'S')
