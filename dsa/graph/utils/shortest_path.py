@@ -23,6 +23,24 @@ def naive_shortest_path(G, s):
                     print(f'update distance of vertex "{w}" from {old_dist} to {new_dist}')
     return dist
 
+def bellman_ford(G, s):
+    dist, prev = dict(), dict()
+    for v in G:
+        dist[v] = sys.maxsize
+        prev[v] = None
+    dist[s] = 0
+    for i in range(1, len(G)): # i=1:|V|-1
+        for v in G:
+            for e in G[v]:
+                w, weight = e[0], e[1]
+                new_dist = dist[v] + weight
+                if new_dist < dist[w]:
+                    old_dist = dist[w]
+                    dist[w] = new_dist
+                    prev[w] = v
+                    print(f'update distance of vertex "{w}" from {old_dist} to {new_dist}')
+    return dist
+
 def bfs_shortest_path(G, s):
     dist, prev = dict(), dict()
     for v in G:
