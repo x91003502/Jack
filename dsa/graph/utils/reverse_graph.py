@@ -8,5 +8,5 @@ def reverse_graph(G):
     for v in G:
         for e in G[v]:
             w, weight = e[0], e[1]
-            add_edge(GR, w, v)
+            add_edge(GR, w, v, weight)
     return GR
