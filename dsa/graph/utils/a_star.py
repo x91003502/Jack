@@ -35,15 +35,17 @@ def a_star(G, Map, s, t):
         
         for e in G[v]:
             w, weight = e[0], e[1]
-            new_dist = dist[v] + weight
+            # new_dist = dist[v] + weight
+            new_dist = dist[v] + weight + euclidean_distance(Map, w, t)
+            # new_dist = dist[v] + weight + manhattan_distance(Map, w, t)
+            
             if new_dist < dist[w]:
                 old_dist = dist[w]
                 dist[w] = new_dist
                 # update the new estimate distance of a vertex by adding a new item in heap
                 # because the new distance must be smaller than previous, it will on the upper of the heap
                 # and will be obtained before the old distance.
-                new_score = new_dist - euclidean_distance(Map, s, t) +  euclidean_distance(Map, w, t)
-                heapq.heappush(pq, (new_score, w))
+                heapq.heappush(pq, (new_dist, w))
                 prev[w] = v
                 print(f'update distance of vertex "{w}" from {old_dist} to {new_dist}')
         proc[v] = True
