@@ -1,5 +1,3 @@
-from collections import defaultdict
-
 # Implement graph data structure by Python dictionary
 def add_vertex(G, v):
     if v in G:
@@ -7,6 +5,14 @@ def add_vertex(G, v):
     else:
         print(f'add vertex "{v}" in graph')
         G[v] = list()
+
+def add_vertex_2d(G, v, Map, x, y):
+    if v in G:
+        print(f'vertex "{v}" is already stored in graph')
+    else:
+        print(f'add vertex "{v}" in graph')
+        G[v] = list()
+        Map[v] = [x, y] # store coordinate in a list
 
 def add_edge(G, v, w, weight=0):
     if v in G:
