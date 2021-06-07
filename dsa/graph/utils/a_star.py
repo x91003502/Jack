@@ -14,6 +14,17 @@ def manhattan_distance(Map, v, t):
     tx, ty = t_pos[0], t_pos[1]
     return abs(vx-tx) + abs(vy-ty)
 
+def diagonal_distance(Map, v, t, mode='chebyshev'):
+    if mode =='chebyshev':
+        D1 = 1
+        D2 = 1
+    v_pos = Map[v]
+    t_pos = Map[t]
+    vx, vy = v_pos[0], v_pos[1]
+    tx, ty = t_pos[0], t_pos[1]
+    dx, dy = abs(vx-tx), abs(vy-ty)
+    return D1 * (dx + dy) - (D2 - 2 * D1) * min(dx, dy)
+
 import sys
 import heapq
 def a_star(G, Map, s, t, heuristic='euclidean'):
@@ -30,14 +41,17 @@ def a_star(G, Map, s, t, heuristic='euclidean'):
             new_dist = dist[v] + weight
             if new_dist < dist[w]:
                 old_dist = dist[w]
-                dist[w] = new_dist
-                
+                dist[w] = new_dist # store the new estimate value, SHOULD NOT adding this by the estimate distance to the target
+                # dist[w] = new_dist + euclidean_distance(Map, w, t) # This is problematic
                 if heuristic == None:
                     potential = new_dist
                 elif heuristic == 'euclidean':
                     potential = new_dist + euclidean_distance(Map, w, t)
                 elif heuristic == 'manhattan':
                     potential = new_dist + manhattan_distance(Map, w, t)
+                elif heuristic == 'chebyshev':
+                    print('chebyshev')
+                    potential = new_dist + diagonal_distance(Map, w, t, mode='chebyshev')
                 
                 # update the new estimate distance of a vertex by adding a new item in heap
                 # because the new distance must be smaller than previous, it will on the upper of the heap
