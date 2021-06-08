@@ -87,3 +87,18 @@ def extract_min(pq, proc):
         if proc.get(v) is False:
             break
     return distance, v
+
+from collections import defaultdict
+from dsa.graph.utils.graph_representation import add_vertex, add_edge
+def compute_potential(G, Map, t, heuristic='euclidean'):
+    newG = defaultdict(str)
+    for v in G:
+        add_vertex(newG, v)
+        for e in G[v]:
+            w, weight = e[0], e[1]
+            if heuristic=='euclidean':
+                new_weight = weight - euclidean_distance(Map, v, t) + euclidean_distance(Map, w, t)
+            elif heuristic=='manhattan':
+                new_weight = weight - manhattan_distance(Map, v, t) + manhattan_distance(Map, w, t)
+            add_edge(newG, v, w, new_weight)
+    return newG
