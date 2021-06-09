@@ -1,4 +1,5 @@
 import math
+from dsa.graph.utils.advanced_shortest_path import init_shortest_path, init_pq, extract_min, process
 
 def euclidean_distance(Map, v, t):
     v_pos = Map[v]
@@ -41,31 +42,20 @@ def a_star(G, Map, s, t, heuristic='euclidean'):
         a_star_process(v, G, pq, dist, prev, proc, Map, t, heuristic, explore_record)
     return explore_record
 
-def init_shortest_path(G, s):
-    dist, prev, proc = dict(), dict(), dict()
-    for v in G:
-        dist[v] = sys.maxsize
-        prev[v] = None
-        proc[v] = False
-    dist[s] = 0
-    return dist, prev, proc
-
-import heapq
-def init_pq(dist):
-    pq = list()
-    for v in dist:
-        pq.append((dist[v], v))
-    heapq.heapify(pq)
-    return pq
-
-def extract_min(pq, proc):
-    # If v pop from heap is already processed before, ignore it and pop again.
-    while True:
-        tup = heapq.heappop(pq)
-        distance, v = tup[0], tup[1]
-        if proc.get(v) is False:
-            break
-    return distance, v
+def a_star2(G, Map, s, t, heuristic='euclidean'):
+    G = compute_potential(G, Map, t, heuristic=heuristic)
+    dist, prev, proc = init_shortest_path(G, s)
+    
+    pq = init_pq(dist)
+    
+    explore_record = OrderedDict()
+    
+    while proc.get(t) is False:
+        distance, v = extract_min(pq, proc)
+        print(f'found minimum score vertex {v} with score : {distance}')
+        process(v, G, pq, dist, prev, proc, explore_record)
+        proc[v] = True
+    return explore_record
 
 def a_star_process(v, G, pq, dist, prev, proc, Map, t, heuristic, explore_record):
     
@@ -109,7 +99,13 @@ def compute_potential(G, Map, t, heuristic='euclidean'):
             w, weight = e[0], e[1]
             if heuristic=='euclidean':
                 new_weight = weight - euclidean_distance(Map, v, t) + euclidean_distance(Map, w, t)
+                # new_weight = weight + euclidean_distance(Map, w, t)
             elif heuristic=='manhattan':
+                # l1 = manhattan_distance(Map, v, t)
+                # l2 = manhattan_distance(Map, w, t)
+                # new_weight = weight - l1 + l2
                 new_weight = weight - manhattan_distance(Map, v, t) + manhattan_distance(Map, w, t)
+            elif heuristic == 'chebyshev':
+                new_weight = weight - diagonal_distance(Map, v, t, mode='chebyshev') + diagonal_distance(Map, w, t, mode='chebyshev')
             add_edge(newG, v, w, new_weight)
     return newG
