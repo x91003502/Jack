@@ -24,7 +24,8 @@ def diagonal_distance(Map, v, t, mode='chebyshev'):
     vx, vy = v_pos[0], v_pos[1]
     tx, ty = t_pos[0], t_pos[1]
     dx, dy = abs(vx-tx), abs(vy-ty)
-    return D1 * (dx + dy) - (D2 - 2 * D1) * min(dx, dy)
+    return D1 * max(dx, dy) + (D2-D1) * min(dx, dy)
+    # return D1 * (dx + dy) - (D2 - 2 * D1) * min(dx, dy)
 
 import sys
 import heapq
@@ -55,6 +56,20 @@ def a_star2(G, Map, s, t, heuristic='euclidean'):
         print(f'found minimum score vertex {v} with score : {distance}')
         process(v, G, pq, dist, prev, proc, explore_record)
         proc[v] = True
+    return explore_record
+
+def a_star3(G, Map, s, t, heuristic='euclidean'):
+    G = compute_potential(G, Map, t, heuristic=heuristic)
+    dist, prev, proc = init_shortest_path(G, s)
+    
+    pq = my_init_pq(dist)
+    
+    explore_record = OrderedDict()
+    
+    while proc.get(t) is False:
+        distance, v = my_extract_min(pq, proc)
+        print(f'found minimum score vertex {v} with score : {distance}')
+        my_process(v, G, pq, dist, prev, proc, explore_record)
     return explore_record
 
 def a_star_process(v, G, pq, dist, prev, proc, Map, t, heuristic, explore_record):
@@ -109,3 +124,65 @@ def compute_potential(G, Map, t, heuristic='euclidean'):
                 new_weight = weight - diagonal_distance(Map, v, t, mode='chebyshev') + diagonal_distance(Map, w, t, mode='chebyshev')
             add_edge(newG, v, w, new_weight)
     return newG
+
+import heapq
+def init_pq(dist):
+    pq = list()
+    for v in dist:
+        pq.append((dist[v], v))
+    heapq.heapify(pq)
+    return pq
+
+import sys
+from dsa.basic_data_structures.priority_queue import PriorityQueue
+class PQVertex(object):
+    def __init__(self, id, distance):
+        self.id = id
+        self.distance = [distance]
+    
+    def get_id(self):
+        return self.id
+    
+    def get_dist(self):
+        return self.distance[0]
+
+def my_init_pq(dist):
+    capacity = 1000
+    sortKey = 'distance'
+    pq = PriorityQueue(capacity, sortKey=sortKey)
+    l = list()
+    # Not efficient way to build a heap
+    for v in dist:
+        pq_vertex = PQVertex(v, distance=dist[v])
+        pq.insert(pq_vertex)
+    return pq
+
+def my_extract_min(pq, proc):
+    while True:
+        vertex = pq.removeMin()
+        distance, v = vertex.get_dist(), vertex.get_id()
+        if proc.get(v) is False:
+            break
+    return distance, v
+
+def my_process(v, G, pq, dist, prev, proc, explore_record):
+    
+    explore_record[v] = list()
+    
+    for e in G[v]:
+        w, weight = e[0], e[1]
+        new_dist = dist[v] + weight
+        if new_dist < dist[w]:
+            old_dist = dist[w]
+            dist[w] = new_dist
+            
+            explore_record[v].append(w)
+            
+            # update the new estimate distance of a vertex by adding a new item in heap
+            # because the new distance must be smaller than previous, it will on the upper of the heap
+            # and will be obtained before the old distance.
+            pq_vertex = PQVertex(w, distance=new_dist)
+            pq.insert(pq_vertex)
+            prev[w] = v
+            print(f'update distance of vertex "{w}" from {old_dist} to {new_dist}')
+    proc[v] = True
