@@ -1,14 +1,3 @@
-########################################
-#           Author: Jack Lin           #
-########################################
-
-import logging
-import logging.config
-
-# create logger
-logging.config.fileConfig('src/logging.conf')
-logger = logging.getLogger('priority_queue.py')
-
 # zero-based priority queue
 class PriorityQueue(object):
     
@@ -58,14 +47,14 @@ class PriorityQueue(object):
         if (self.size == 0):
             print('Heap is empty.')
         else:
-            logger.debug('\n==================== Remove from PQ ====================\n')
+            # print('\n==================== Remove from PQ ====================\n')
             min = self.minHeap[0]
             # self.minHeap[0] = self.minHeap[self.size - 1]
             self.swap(0, self.size - 1)
             del self.minHeap[-1]
             self.size -= 1
             self.heapifyDown(0)
-            logger.debug(f'Object : {min} Has Been Removed.')
+            # print(f'Object : {min} Has Been Removed.')
             return min
     
     def clear(self):
@@ -80,7 +69,7 @@ class PriorityQueue(object):
         if (self.size == 0):
             print('Heap is empty.')
         else:
-            logger.debug('\n==================== Remove from PQ ====================\n')
+            # print('\n==================== Remove from PQ ====================\n')
             remove = self.minHeap[index]
             self.minHeap[index] = self.minHeap[self.size - 1]
             
@@ -91,7 +80,7 @@ class PriorityQueue(object):
             del self.minHeap[-1]
             self.size -= 1
             self.heapifyDown(index)
-            logger.debug(f'Object : {remove.id} Has Been Removed.')
+            # print(f'Object : {remove.id} Has Been Removed.')
             return remove
     
     # def removeById(self, id):
@@ -104,22 +93,14 @@ class PriorityQueue(object):
     #     else:
     #         currIndex = self.findInexById(id)
     #         if (currIndex == -1):
-    #             logger.debug(f'Object {0} Not Found.')
+    #             print(f'Object {0} Not Found.')
     #         else:
-    #             logger.debug('\n==================== Remove from PQ ====================\n')
+    #             print('\n==================== Remove from PQ ====================\n')
     #             self.minHeap[currIndex] = self.minHeap[self.size - 1]
     #             del self.minHeap[-1]
     #             self.size -= 1
     #             self.heapifyDown(currIndex)
-    #             logger.debug(f'Object : {0} Has Been Removed.')
-    
-    def update(self, index):
-        '''
-        A simple way to update the PQ.
-        Time Complexity: O(log n)
-        '''
-        logger.debug('\n==================== Update PQ ====================\n')
-        self.heapifyDown(index)
+    #             print(f'Object : {0} Has Been Removed.')
     
     def buildHeap(self):
         '''
@@ -136,9 +117,11 @@ class PriorityQueue(object):
         Time Complexity: O(log n)
         '''
         if (self.size > 1):
-            parentIndex = self.parent(currIndex)
-            if (self.getSortKeyValue(currIndex) < self.getSortKeyValue(parentIndex)):
-                self.swap(currIndex, parentIndex)
+            if currIndex > 0:
+                parentIndex = self.parent(currIndex)
+                if (self.getSortKeyValue(currIndex) <= self.getSortKeyValue(parentIndex)):
+                    self.swap(currIndex, parentIndex)
+                    self.heapifyUp(parentIndex)
     
     def heapifyDown(self, currIndex):
         '''
@@ -147,9 +130,10 @@ class PriorityQueue(object):
         '''
         if (self.hasAChild(currIndex)):
             minChildIndex = self.minChildIndex(currIndex)
-            if (self.getSortKeyValue(currIndex) > self.getSortKeyValue(minChildIndex)):
-                self.swap(currIndex, minChildIndex)
-                self.heapifyDown(minChildIndex)
+            if minChildIndex != currIndex:
+                if (self.getSortKeyValue(currIndex) >= self.getSortKeyValue(minChildIndex)):
+                    self.swap(currIndex, minChildIndex)
+                    self.heapifyDown(minChildIndex)
     
     def parent(self, currIndex):
         return int((currIndex - 1)/ 2)
@@ -172,15 +156,15 @@ class PriorityQueue(object):
         Swap two objects by their indices.
         Time Complexity: O(1)
         '''
-        firstIndex = self.minHeap[i].index[0]
-        secondIndex = self.minHeap[j].index[0]
+        # firstIndex = self.minHeap[i].index[0]
+        # secondIndex = self.minHeap[j].index[0]
     
         temp = self.minHeap[i]
         self.minHeap[i] = self.minHeap[j]
         self.minHeap[j] = temp
     
-        self.minHeap[i].index[0] = firstIndex
-        self.minHeap[j].index[0] = secondIndex
+        # self.minHeap[i].index[0] = firstIndex
+        # self.minHeap[j].index[0] = secondIndex
     
     def findInexById(self, id):
         '''
@@ -220,15 +204,14 @@ class PriorityQueue(object):
                 minChildIndex = self.minChildIndex(i)
                 if(self.getSortKeyValue(i) > self.getSortKeyValue(minChildIndex)):
                     is_heap = False
-                    logger.critical('PQ Bug')
                     # return is_heap
         return is_heap
     
     def printHeap(self):
         if (self.size == 0):
-            logger.debug('Heap is empty.')
+            print('Heap is empty.')
         else:
-            logger.debug('\n==================== Heap Info ====================\n')
+            print('\n==================== Heap Info ====================\n')
             for elem in self.minHeap:
-                logger.debug(f'id : {elem.id}  index : {elem.index}  count : {elem.count}')
-            logger.debug('\n===================================================\n')
+                print(f'id : {elem.id}  index : {elem.index}  count : {elem.count}')
+            print('\n===================================================\n')
