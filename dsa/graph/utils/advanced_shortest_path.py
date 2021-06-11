@@ -26,7 +26,7 @@ def birectional_dijkstra(G, s, t):
             break
     
     shortest_path = find_shortest_path(s, dist, prev, proc, t, distR, prevR, procR)
-    return shortest_path
+    return explore_record, explore_recordR, shortest_path
 
 def init_shortest_path(G, s):
     dist, prev, proc = dict(), dict(), dict()
@@ -96,7 +96,8 @@ def find_shortest_path(s, dist, prev, proc, t, distR, prevR, procR):
     path.reverse()
     
     curr_v = v_best
-    while curr_v != t and curr_v != v_best:
-        path.append(curr_v)
+    while curr_v != t:
+        if curr_v != v_best:
+            path.append(curr_v)
         curr_v = prevR[curr_v]
     return path

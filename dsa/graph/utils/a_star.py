@@ -56,7 +56,8 @@ def a_star2(G, Map, s, t, heuristic='euclidean'):
         print(f'found minimum score vertex {v} with score : {distance}')
         process(v, G, pq, dist, prev, proc, explore_record)
         proc[v] = True
-    return explore_record
+    shortest_path = find_shortest_path(prev, s, t)
+    return explore_record, shortest_path
 
 def a_star3(G, Map, s, t, heuristic='euclidean'):
     G = compute_potential(G, Map, t, heuristic=heuristic)
@@ -70,7 +71,8 @@ def a_star3(G, Map, s, t, heuristic='euclidean'):
         distance, v = my_extract_min(pq, proc)
         print(f'found minimum score vertex {v} with score : {distance}')
         my_process(v, G, pq, dist, prev, proc, explore_record)
-    return explore_record
+    shortest_path = find_shortest_path(prev, s, t)
+    return explore_record, shortest_path
 
 def a_star_process(v, G, pq, dist, prev, proc, Map, t, heuristic, explore_record):
     
@@ -186,3 +188,11 @@ def my_process(v, G, pq, dist, prev, proc, explore_record):
             prev[w] = v
             print(f'update distance of vertex "{w}" from {old_dist} to {new_dist}')
     proc[v] = True
+
+def find_shortest_path(prev, start, target):
+    shortest_path = list()
+    curr = prev[target]
+    while curr != start:
+        shortest_path.append(curr)
+        curr = prev[curr]
+    return shortest_path
