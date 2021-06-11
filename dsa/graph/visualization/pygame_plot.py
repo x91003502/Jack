@@ -1,15 +1,17 @@
 # https://stackoverflow.com/questions/19780411/pygame-drawing-a-rectangle
 import sys
+from typing import Iterator, OrderedDict
 import pygame
+from pygame.event import peek
 
-BACKGROUND = (209, 217, 217) #d1d9d9
-GRID = (0, 87, 146) #005792
-BLOCK = (159, 184, 173)
+BACKGROUND = (213, 236, 194) #d5ecc2
+GRID = (13, 115, 119) #0d7377
+BLOCK = (228, 186, 212) #e4bad4
 EXPLORED = (148, 208, 204) #94d0cc
-DISCOVERED = (238, 196, 196) #eec4c4
+DISCOVERED = (255, 193, 182) #eec4c4
 START = (104, 176, 171)#bdd2b6
 TARGET = (242, 145, 145) #f29191
-PATH = (255, 237, 163)
+PATH = (255, 220, 184) #ffdcb8
 BLOCKSIZE = 30
 
 PLOT_EXPLORE = 10
@@ -17,7 +19,7 @@ PLOT_PATH = 10
 plot_explore_event = pygame.USEREVENT + 1
 plot_path_event = pygame.USEREVENT + 2
 
-def plot(Map, blocks, explored, shortest_path, start, target, n_col, n_row):
+def plot(Map, explored, shortest_path, start, target, n_col, n_row, blocks=None):
     global SCREEN, WINDOW_HEIGHT, WINDOW_WIDTH
     WINDOW_HEIGHT = BLOCKSIZE * n_row
     WINDOW_WIDTH = BLOCKSIZE * n_col
@@ -37,26 +39,21 @@ def plot(Map, blocks, explored, shortest_path, start, target, n_col, n_row):
     pos_x = BLOCKSIZE * x
     pos_y = BLOCKSIZE * y
     update_grid(pos_x, pos_y, action='target')
-    
-    for b in blocks:
-        x, y = Map[b]
-        pos_x = BLOCKSIZE * x
-        pos_y = BLOCKSIZE * y
-        update_grid(pos_x, pos_y, action='block')
-    
-    finish_explore = False
-    explored_iter = iter(explored)
+    explore_iter = iter(explored)
     path_iter = iter(shortest_path)
+    finish_explore = False
     while True:
         draw_grid()
+        # finish_explore = if_finish_explore(explore_iter)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             if event.type == plot_explore_event and finish_explore != True:
-                v = next(explored_iter, None)
+                v = next(explore_iter, None)
                 if v == None:
                     finish_explore = True
+                    # finish_explore = if_finish_explore(explore_iter)
                     continue
                 if v == start : continue
                 if v != target:
@@ -64,13 +61,12 @@ def plot(Map, blocks, explored, shortest_path, start, target, n_col, n_row):
                     pos_x = BLOCKSIZE * x
                     pos_y = BLOCKSIZE * y
                     update_grid(pos_x, pos_y, action='explored')
-                
-                for w in explored[v]:
-                    if w == target: continue
-                    x, y = Map[w]
-                    pos_x = BLOCKSIZE * x
-                    pos_y = BLOCKSIZE * y
-                    update_grid(pos_x, pos_y, action='discovered')
+                    for w in explored[v]:
+                        if w == target: continue
+                        x, y = Map[w]
+                        pos_x = BLOCKSIZE * x
+                        pos_y = BLOCKSIZE * y
+                        update_grid(pos_x, pos_y, action='discovered')
             if event.type == plot_path_event and finish_explore == True:
                 v = next(path_iter, None)
                 if v == None:
@@ -81,7 +77,6 @@ def plot(Map, blocks, explored, shortest_path, start, target, n_col, n_row):
                 pos_x = BLOCKSIZE * x
                 pos_y = BLOCKSIZE * y
                 update_grid(pos_x, pos_y, action='path')
-                pygame.time.set_timer(plot_path_event, PLOT_PATH)
                 
         pygame.display.update()
 
