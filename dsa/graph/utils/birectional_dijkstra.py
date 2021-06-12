@@ -1,7 +1,7 @@
 import sys
 from dsa.graph.utils.reverse_graph import reverse_graph
-
 from collections import OrderedDict
+
 def birectional_dijkstra(G, s, t):
     GR = reverse_graph(G)
     dist, prev, proc = init_shortest_path(G, s)

@@ -46,14 +46,14 @@ def plot(Map, explored, shortest_path, start, target, n_col, n_row, blocks=None)
         draw_grid()
         # finish_explore = if_finish_explore(explore_iter)
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    pygame.quit()
+                    sys.exit()
             if event.type == plot_explore_event and finish_explore != True:
                 v = next(explore_iter, None)
                 if v == None:
                     finish_explore = True
-                    # finish_explore = if_finish_explore(explore_iter)
                     continue
                 if v == start : continue
                 if v != target:
@@ -70,14 +70,12 @@ def plot(Map, explored, shortest_path, start, target, n_col, n_row, blocks=None)
             if event.type == plot_path_event and finish_explore == True:
                 v = next(path_iter, None)
                 if v == None:
-                    pygame.time.wait(3000)
-                    pygame.quit()
-                    sys.exit()
-                x, y = Map[v]
-                pos_x = BLOCKSIZE * x
-                pos_y = BLOCKSIZE * y
-                update_grid(pos_x, pos_y, action='path')
-                
+                    pygame.event.clear()
+                else:
+                    x, y = Map[v]
+                    pos_x = BLOCKSIZE * x
+                    pos_y = BLOCKSIZE * y
+                    update_grid(pos_x, pos_y, action='path')
         pygame.display.update()
 
 def draw_grid():
