@@ -30,21 +30,22 @@ def chebyshev(a, b):
 import sys
 import heapq
 from collections import OrderedDict
-def a_star(G, Map, s, t, heuristic='euclidean'):
-    dist, prev, proc = init_shortest_path(G, s)
+# def a_star(G, Map, s, t, heuristic='euclidean'):
+#     dist, prev, proc = init_shortest_path(G, s)
     
-    pq = init_pq(dist)
+#     pq = init_pq(dist)
     
-    explore_record = OrderedDict()
+#     explore_record = OrderedDict()
     
-    while proc.get(t) is False:
-        distance, v = extract_min(pq, proc)
-        print(f'found minimum score vertex {v} with score : {distance}')
-        a_star_process(v, G, pq, dist, prev, proc, Map, t, heuristic, explore_record)
-    return explore_record
+#     while proc.get(t) is False:
+#         distance, v = extract_min(pq, proc)
+#         print(f'found minimum score vertex {v} with score : {distance}')
+#         a_star_process(v, G, pq, dist, prev, proc, Map, t, heuristic, explore_record)
+#     return explore_record
 
 def a_star2(G, Map, s, t, heuristic='euclidean'):
     G = compute_potential(G, Map, t, heuristic=heuristic)
+    # G = compute_potential2(G, Map, s, t, heuristic=heuristic)
     dist, prev, proc = init_shortest_path(G, s)
     
     pq = init_pq(dist)
@@ -60,7 +61,8 @@ def a_star2(G, Map, s, t, heuristic='euclidean'):
     return explore_record, shortest_path
 
 def a_star3(G, Map, s, t, heuristic='euclidean'):
-    G = compute_potential(G, Map, t, heuristic=heuristic)
+    # G = compute_potential(G, Map, t, heuristic=heuristic)
+    G = compute_potential2(G, Map, s, t, heuristic=heuristic)
     dist, prev, proc = init_shortest_path(G, s)
     
     pq = my_init_pq(dist)
@@ -117,6 +119,22 @@ def compute_potential(G, Map, t, heuristic='euclidean'):
             v_pentential = compute_distance(Map, v, t, heuristic=heuristic)
             w_pentential = compute_distance(Map, w, t, heuristic=heuristic)
             new_weight = weight - v_pentential + w_pentential
+            add_edge(newG, v, w, new_weight)
+    return newG
+
+def compute_potential2(G, Map, s, t, heuristic='euclidean'):
+    newG = defaultdict(str)
+    for v in G:
+        add_vertex(newG, v)
+        for e in G[v]:
+            w, weight = e[0], e[1]
+            v_pentential = compute_distance(Map, v, t, heuristic=heuristic)
+            v_pententialR = compute_distance(Map, v, s, heuristic=heuristic)
+            w_pentential = compute_distance(Map, w, t, heuristic=heuristic)
+            w_pententialR = compute_distance(Map, w, s, heuristic=heuristic)
+            p = (v_pentential - v_pententialR)/2
+            pR = (w_pentential - w_pententialR)/2
+            new_weight = weight - p + pR
             add_edge(newG, v, w, new_weight)
     return newG
 
