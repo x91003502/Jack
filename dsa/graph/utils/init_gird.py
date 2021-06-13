@@ -44,8 +44,7 @@ def grid_2d_direction_8(n_row, n_col, weight1=1, weight2=1.5):
     # add edges
     for y in range(0, n_row):
         for x in range(0, n_col):
-            add_vertex_2d(G, f'v{idx}', Map, x, y)
-            idx += 1     
+            idx = x + n_col * y  
             if y+1 < n_row:
                 ngbr_idx1 = x + n_col * (y+1) # upper
                 add_edge(G, f'v{idx}', f'v{ngbr_idx1}', weight=weight1)
